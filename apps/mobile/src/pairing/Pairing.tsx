@@ -8,12 +8,7 @@ export const Pairing = ({ navigation }: PairingProps) => {
   const { pairs } = useApi();
 
   const generatePairingCode = async () => {
-    pairs.interceptors.request.use((config) => {
-      console.log(config.headers);
-      return config;
-    });
     const { data } = await pairs.get(PairRoutes.GENERATE_PAIR_CODE);
-    console.log(data);
     if (data) {
       Clipboard.setString(data);
       navigation.goBack();
