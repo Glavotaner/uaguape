@@ -1,0 +1,2 @@
+# Prisma ORM - Ignore migration files in production
+prisma/migrations/

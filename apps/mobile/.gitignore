@@ -1,0 +1,47 @@
+# React Native - Metro bundler cache
+/metro-cache/
+
+# React Native - Watchman
+/.watchmanconfig
+
+# Xcode
+xcuserdata/
+*.xccheckout
+*.xcworkspace
+!default.xcworkspace
+
+# Derived Data and archives
+DerivedData/
+ArchiveIntermediates/
+
+# Pods (if using CocoaPods)
+Pods/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# App icons (generated)
+*.appiconset/
+
+# Gradle files
+.gradle/
+/build/
+
+# Signing files
+*.jks
+*.keystore
+
+# User-specific configurations
+android/local.properties
+
+# Generated files
+/captures/
+/outputs/
+/android/app/build/
+
+# IDE settings
+.idea/
+*.iml
