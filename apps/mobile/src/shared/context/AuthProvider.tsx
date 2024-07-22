@@ -21,7 +21,6 @@ const authConfig: Auth.AuthConfiguration = {
   clientId: `${REACT_APP_OAUTH_CLIENT_ID}.apps.googleusercontent.com`,
   redirectUrl: `com.googleusercontent.apps.${REACT_APP_OAUTH_CLIENT_ID}:/oauth2redirect/google`,
   scopes: ["openid", "profile", "email"],
-  clientSecret: JWT_SECRET,
 };
 
 type AuthState = {
@@ -55,7 +54,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       let storedAuth = await getAuth();
       if (storedAuth == null) {
         storedAuth = await Auth.authorize(authConfig);
-
         await axios.post(
           `${REACT_APP_BASE_URL}${UserRoutes.BASE}/${UserRoutes.REGISTER}`,
           null,
