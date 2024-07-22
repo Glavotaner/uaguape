@@ -39,9 +39,12 @@ const generateControllers = () =>
     {} as ControllerAxiosInstances
   );
 
-const ApiContext = createContext<ControllerAxiosInstances>(
-  generateControllers()
-);
+const ApiContext = createContext<ControllerAxiosInstances>({
+  users: axios.create(),
+  answers: axios.create(),
+  pairs: axios.create(),
+  questions: axios.create(),
+});
 
 export const useApi = () => useContext(ApiContext);
 
@@ -67,7 +70,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     [hasRefreshToken, onRefreshAuth]
   );
 
-  const api = generateControllers();
+  const getRoute = (controller: string) => `${REACT_APP_BASE_URL}${controller}`;
+
+  const api = {
+    users: axios.create({ baseURL: getRoute(UserRoutes.BASE) }),
+    answers: axios.create({ baseURL: getRoute(AnswerRoutes.BASE) }),
+    pairs: axios.create({ baseURL: getRoute(PairRoutes.BASE) }),
+    questions: axios.create({ baseURL: getRoute(QuestionRoutes.BASE) }),
+  };
 
   const controllers = Object.values(api);
 
@@ -78,7 +88,6 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (idToken) {
       const authorization = `Bearer ${idToken}`;
-      console.log(authorization);
       controllers.forEach((controller) => {
         controller.defaults.headers.Authorization = authorization;
       });
