@@ -11,6 +11,7 @@ import { QuestionModule } from './question/question.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import config from './configuration/configuration';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import config from './configuration/configuration';
     UserModule,
     QuestionModule,
     AnswerModule,
+    NotificationModule,
     PairModule,
     JwtModule,
     PrismaModule,
