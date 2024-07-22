@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { initializeApp, credential, app, messaging } from 'firebase-admin';
+import * as admin from 'firebase-admin';
+import config from '../../firebase.config.json';
 
 @Injectable()
 export class NotificationService {
-  private readonly messaging: messaging.Messaging;
+  private readonly messaging: admin.messaging.Messaging;
 
-  constructor() {
-    const client = initializeApp({
-      credential: credential.cert('../firebase.config.json'),
+  constructor() {;
+    const client = admin.initializeApp({
+      credential: admin.credential.cert(config as admin.ServiceAccount),
     });
     this.messaging = client.messaging();
   }
