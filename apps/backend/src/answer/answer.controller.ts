@@ -3,10 +3,12 @@ import { AnswerService } from './answer.service';
 import { CreateAnswerDto } from 'uaguape-common';
 import { AnswerRoutes } from 'uaguape-routes';
 import { GetUserId } from 'src/global/decorators/user-id.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 const QUESTION_ID = AnswerRoutes.QUESTION_ID.replace(':', '');
 
 @Controller(AnswerRoutes.BASE)
+@ApiTags(AnswerRoutes.BASE)
 export class AnswerController {
   constructor(private readonly answerService: AnswerService) {}
 

@@ -3,8 +3,10 @@ import { UserService } from './user.service';
 import { CreateUserDto } from 'uaguape-common';
 import { UserRoutes } from 'uaguape-routes';
 import { GetUser } from 'src/global/decorators/user.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller(UserRoutes.BASE)
+@ApiTags(UserRoutes.BASE)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

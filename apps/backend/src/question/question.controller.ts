@@ -2,10 +2,12 @@ import { Controller, Get, Param, PipeTransform } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionRoutes } from 'uaguape-routes';
 import { GetUserId } from 'src/global/decorators/user-id.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
 const QUESTION_ID = QuestionRoutes.ID.replace(':', '');
 
 @Controller(QuestionRoutes.BASE)
+@ApiTags(QuestionRoutes.BASE)
 export class QuestionController {
   constructor(private readonly questionService: QuestionService) {}
 
