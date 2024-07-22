@@ -19,4 +19,11 @@ export class UserService {
       where: { email: createUserDto.email },
     });
   }
+
+  update(id: string, data: Prisma.UserUpdateInput) {
+    return this._user.update({
+      data,
+      where: { id },
+    });
+  }
 }
