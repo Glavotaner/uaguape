@@ -28,6 +28,5 @@ import config from './configuration/configuration';
     { provide: APP_GUARD, useClass: TokenGuard },
     { provide: APP_GUARD, useClass: UserExistsGuard },
   ],
-  exports: [JwtModule],
 })
 export class AppModule {}
