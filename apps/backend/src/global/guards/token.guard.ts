@@ -17,10 +17,8 @@ export class TokenGuard implements CanActivate {
     if (!token) {
       return false;
     }
-    const user =
-      this.jwtService.verify(token, {
-        secret: this.configService.get('JWT_SECRET'),
-      }) ?? {};
+
+    const user = this.jwtService.decode(token) ?? {};
 
     const tokenIsValid = Date.now() < user.exp * 1000;
     if (tokenIsValid) {
