@@ -45,3 +45,5 @@ android/local.properties
 # IDE settings
 .idea/
 *.iml
+
+/android/app/google-services.json
