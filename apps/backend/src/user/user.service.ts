@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from 'uaguape-common';
+import { CreateUserDto, UpdateUserDto } from 'uaguape-common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'uaguape-db';
 
@@ -20,7 +20,7 @@ export class UserService {
     });
   }
 
-  update(id: string, data: Prisma.UserUpdateInput) {
+  update(id: string, data: UpdateUserDto) {
     return this._user.update({
       data,
       where: { id },
