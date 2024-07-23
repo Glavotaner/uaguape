@@ -16,13 +16,6 @@ import { StorageKeys, useStorage } from "../hooks/storage";
 import axios from "axios";
 import { UserRoutes } from "uaguape-routes";
 
-const authConfig: Auth.AuthConfiguration = {
-  issuer: "https://accounts.google.com",
-  clientId: `${REACT_APP_OAUTH_CLIENT_ID}.apps.googleusercontent.com`,
-  redirectUrl: `com.googleusercontent.apps.${REACT_APP_OAUTH_CLIENT_ID}:/oauth2redirect/google`,
-  scopes: ["openid", "profile", "email"],
-};
-
 type AuthState = {
   idToken: string;
   refreshToken: string;
@@ -48,6 +41,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState | null>(null);
   const [getAuth, setAuth] = useStorage(StorageKeys.AUTH_STATE);
   const [isAuthReady, setIsAuthReady] = useState(false);
+
+  const authConfig: Auth.AuthConfiguration = {
+    issuer: "https://accounts.google.com",
+    clientId: `${REACT_APP_OAUTH_CLIENT_ID}.apps.googleusercontent.com`,
+    redirectUrl: `com.googleusercontent.apps.${REACT_APP_OAUTH_CLIENT_ID}:/oauth2redirect/google`,
+    scopes: ["openid", "profile", "email"],
+  };
 
   const authorize = async () => {
     try {
