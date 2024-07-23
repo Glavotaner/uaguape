@@ -7,26 +7,31 @@ import { NotificationService } from 'src/notification/notification.service';
 export class PairService {
   private readonly _user: Prisma.UserDelegate;
 
-  constructor(prismaService: PrismaService, private readonly notificationService: NotificationService) {
+  constructor(
+    prismaService: PrismaService,
+    private readonly notificationService: NotificationService,
+  ) {
     this._user = prismaService.user;
   }
 
-  async update(id: string, {pairId}: { pairId: string }) {
-    await this._user.update({
+  async update(id: string, { pairId }: { pairId: string }) {
+    const user = await this._user.update({
       where: { id },
       data: { pairId },
+      select: { name: true },
     });
-    await this._user.update({
+    const pair = await this._user.update({
       where: { id: pairId },
       data: { pairId: id },
+      select: { pushToken: true },
     });
-    const [user, pair] = await Promise.all([
-      this._user.findUnique({ where: { id: pairId }, select: { name: true } }),
-      this._user.findUnique({ where: { id }, select: { pushToken: true } }),
-    ]);
-    
+
     if (pair.pushToken) {
-      this.notificationService.create({token: pair.pushToken, title: 'Pairing', body: `You have been paired with ${user.name}`});
+      this.notificationService.create({
+        token: pair.pushToken,
+        title: 'Pairing',
+        body: `You have been paired with ${user.name}`,
+      });
     }
   }
 
