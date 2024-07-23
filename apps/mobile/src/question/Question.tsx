@@ -127,16 +127,13 @@ const useQuestion = (id: string) => {
     }
   };
 
-  const answerQuestion = async () => {
+  const answerQuestion = useCallback(async () => {
     const dto: CreateAnswerDto = {
       content: answer,
     };
-    await answers.post(
-      AnswerRoutes.QUESTION_ID.replace(":id", question!.id),
-      dto
-    );
+    await answers.post(AnswerRoutes.QUESTION_ID.replace(":id", id), dto);
     getQuestion();
-  };
+  }, [answer, id]);
 
   return { question, answer, onAnswerChange: setAnswer, answerQuestion };
 };
