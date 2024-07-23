@@ -6,7 +6,7 @@ import { GetUserId } from 'src/global/decorators/user-id.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/global/decorators/user.decorator';
 
-const QUESTION_ID = AnswerRoutes.QUESTION_ID.replace(':', '');
+const QUESTION_ID = AnswerRoutes.QUESTION_ID.replace('question/:', '');
 
 @Controller(AnswerRoutes.BASE)
 @ApiTags(AnswerRoutes.BASE)
