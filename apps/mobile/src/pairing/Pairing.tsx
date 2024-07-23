@@ -1,6 +1,5 @@
-import { Button, ToastAndroid, View } from "react-native";
+import { Button, Share, View } from "react-native";
 import { useApi } from "../shared/context/ApiProvider";
-import Clipboard from "@react-native-clipboard/clipboard";
 import { PairRoutes } from "uaguape-routes";
 import { PairingProps } from "../shared/types/screen-props";
 
@@ -8,11 +7,16 @@ export const Pairing = ({ navigation }: PairingProps) => {
   const { pairs } = useApi();
 
   const generatePairingCode = async () => {
-    const { data } = await pairs.get(PairRoutes.GENERATE_PAIR_CODE);
-    if (data) {
-      Clipboard.setString(data);
+    const response = await pairs.get(PairRoutes.GENERATE_PAIR_CODE);
+    const pairingUrl = response.data;
+    const result = await Share.share(
+      {
+        message: `Click on this link to join me! ${pairingUrl}`,
+      },
+      { dialogTitle: "Send this to someone so they can join you!" }
+    );
+    if (result.action === Share.sharedAction) {
       navigation.goBack();
-      ToastAndroid.show("Pairing code copied to clipboard", ToastAndroid.SHORT);
     }
   };
 
