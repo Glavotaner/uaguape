@@ -13,10 +13,10 @@ export class NotificationService {
     this.messaging = client.messaging();
   }
 
-  async create() {
+  async create({token, title, body}: {token: string; title: string, body: string}) {
     return this.messaging.send({
-      token: '',
-      notification: { body: 'Test', title: 'Test Title' },
-    });
+      token,
+      notification: { body, title },
+    })
   }
 }

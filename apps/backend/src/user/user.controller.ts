@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, TokenizedUserDto, UpdateUserDto } from 'uaguape-common';
 import { UserRoutes } from 'uaguape-routes';
@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Patch()
-  updateUser(@GetUserId() id: string, dto: UpdateUserDto) {
+  updateUser(@GetUserId() id: string, @Body() dto: UpdateUserDto) {
     return this.userService.update(id, dto);
   }
 }
