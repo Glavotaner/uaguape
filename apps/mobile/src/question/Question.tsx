@@ -5,7 +5,6 @@ import {
   Pressable,
   FlatList,
   ListRenderItemInfo,
-  Text,
   Button,
 } from "react-native";
 import {
@@ -21,11 +20,12 @@ import { Label } from "../shared/components/label/Label";
 import { useApi } from "../shared/context/ApiProvider";
 import { HomeProps, QuestionProps } from "../shared/types/screen-props";
 import { useTheme } from "../shared/context/ThemeProvider";
-import { useNavigation } from "@react-navigation/native";
+import { useMessaging } from "../shared/hooks/messaging";
 
 const useDailyQuestion = ({ navigation }: HomeProps) => {
   const [dailyQuestion, setDailyQuestion] = useState<QuestionDto | null>(null);
   const { questions } = useApi();
+  useMessaging();
 
   const fetchDailyQuestion = async () => {
     try {
@@ -63,10 +63,10 @@ export const Home = ({ navigation, ...props }: HomeProps) => {
   return (
     <View
       style={{
-        backgroundColor: "grey",
         alignContent: "center",
         alignItems: "center",
         justifyContent: "center",
+        height: "100%",
       }}
     >
       {dailyQuestion ? (
@@ -97,6 +97,7 @@ const QuestionItem = ({
         borderRadius: 5,
         rowGap: 10,
         padding: 10,
+        elevation: 5,
       }}
       onPress={onPress}
     >
