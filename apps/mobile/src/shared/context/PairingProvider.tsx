@@ -11,12 +11,12 @@ import { PairRoutes, UserRoutes } from "uaguape-routes";
 
 const PairingContext = createContext<{
   pairId: string | null;
-  hasPairId: boolean;
+  hasPair: boolean;
   confirmPair: () => void;
   cancelPair: () => void;
 }>({
   pairId: null,
-  hasPairId: false,
+  hasPair: false,
   confirmPair: () => {},
   cancelPair: () => {},
 });
@@ -31,7 +31,7 @@ export const PairingProvider = ({
   const [pairId, setPairId] = useState<string | null>(null);
   const { pairs } = useApi();
 
-  const parsePairId = (url: string) => url.split("uaguape:/pair/").pop()!;
+  const parsePairId = (url: string) => url.split("uaguape://pair/").pop()!;
 
   useEffect(() => {
     const checkInitialDeeplink = async () => {
@@ -59,7 +59,7 @@ export const PairingProvider = ({
     <PairingContext.Provider
       value={{
         pairId,
-        hasPairId: pairId != null,
+        hasPair: pairId != null,
         confirmPair,
         cancelPair: () => setPairId(null),
       }}

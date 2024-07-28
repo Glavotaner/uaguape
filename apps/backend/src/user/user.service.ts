@@ -15,16 +15,13 @@ export class UserService {
     this._user = prismaService.user;
   }
 
-  create(dto: CreateUserDto) {
+  create({ email, name }: CreateUserDto) {
     // TODO fix oauth scopes
-    const name = dto.email.includes('marin')
-      ? this.configService.get('PERSON_2')
-      : this.configService.get('PERSON_1');
-    // TODO make only create
+
     return this._user.upsert({
-      create: { ...dto, name },
-      update: { ...dto, name },
-      where: { email: dto.email },
+      create: { email, name },
+      update: { email, name },
+      where: { email },
     });
   }
 

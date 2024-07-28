@@ -18,12 +18,12 @@ export const useStorage: StorageHook = (key: StorageKeys) => {
       return null;
     }
   };
-  const setItem = (item: unknown) => {
+  const setItem = async (item: unknown) => {
     try {
       if (item == null) {
-        return SecureStorage.removeItem(key);
+        return await SecureStorage.removeItem(key);
       } else {
-        return SecureStorage.setItem(key, JSON.stringify(item), {
+        return await SecureStorage.setItem(key, JSON.stringify(item), {
           accessible: ACCESSIBLE.WHEN_UNLOCKED,
         });
       }

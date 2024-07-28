@@ -63,17 +63,14 @@ const Navigation = () => {
 
   useEffect(() => {
     const fetchImage = async () => {
-      const { data } = await users.get("");
-      if (data) {
-        setImage(data);
-      }
+      // TODO fetch image
     };
     if (isAuthReady && hasAuth && !image) {
       fetchImage();
     }
   }, [isAuthReady]);
 
-  const { hasPairId, pairId, cancelPair } = usePairing();
+  const { hasPair: hasPairId, pairId, cancelPair } = usePairing();
 
   return (
     <Stack.Navigator>

@@ -41,8 +41,7 @@ export const useMessaging = () => {
           }
         }),
         messagingClient.onTokenRefresh((pushToken) => {
-          const dto: UpdateUserDto = { pushToken: pushToken ?? undefined };
-          users.patch("", dto);
+          users.update({ pushToken });
         })
       );
     }
@@ -77,8 +76,7 @@ export const useMessaging = () => {
         // TODO do something
       }
       const pushToken = await getToken();
-      const dto: UpdateUserDto = { pushToken: pushToken! };
-      users.patch("", dto);
+      users.update({ pushToken });
     }
   };
 };

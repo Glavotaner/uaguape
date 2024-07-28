@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { REACT_APP_BASE_URL } from "@env";
@@ -14,36 +15,26 @@ import {
   UserRoutes,
 } from "uaguape-routes";
 import { useAuth } from "./AuthProvider";
+import {
+  CreateAnswerDto,
+  QuestionDetailDto,
+  UpdateUserDto,
+  UserDto,
+} from "uaguape-common";
 
-const controllers = [
-  UserRoutes.BASE,
-  QuestionRoutes.BASE,
-  AnswerRoutes.BASE,
-  PairRoutes.BASE,
-] as const;
-
-type ControllerNames = (typeof controllers)[number];
-
-type ControllerAxiosInstances = {
-  [K in ControllerNames]: AxiosInstance;
-};
-
-const generateControllers = () =>
-  controllers.reduce(
-    (controllers, controller) => ({
-      ...controllers,
-      [controller]: axios.create({
-        baseURL: `${REACT_APP_BASE_URL}${controller}`,
-      }),
-    }),
-    {} as ControllerAxiosInstances
-  );
-
-const ApiContext = createContext<ControllerAxiosInstances>({
-  users: axios.create(),
-  answers: axios.create(),
-  pairs: axios.create(),
-  questions: axios.create(),
+const ApiContext = createContext<{
+  users: {
+    update: (dto: UpdateUserDto) => Promise<UserDto>;
+    get: () => Promise<UserDto>;
+  };
+  questions: {
+    daily: () => Promise<QuestionDetailDto>;
+    detail: (id: string) => Promise<QuestionDetailDto>;
+    answer: (id: string, dto: CreateAnswerDto) => Promise<QuestionDetailDto>;
+  };
+}>({
+  users: {} as any,
+  questions: {} as any,
 });
 
 export const useApi = () => useContext(ApiContext);
@@ -82,7 +73,10 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const controllers = Object.values(api);
 
   controllers.forEach((controller) =>
-    controller.interceptors.response.use((response) => response, interceptor)
+    controller.interceptors.response.use(
+      (response) => response.data,
+      interceptor
+    )
   );
 
   useEffect(() => {
@@ -94,5 +88,29 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [idToken]);
 
-  return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
+  const endpoints = useMemo(() => {
+    const users = {
+      update: (dto: UpdateUserDto) =>
+        api.users.patch<UserDto, UserDto>("", dto),
+      get: () => api.users.get<UserDto, UserDto>(""),
+    };
+    const questions = {
+      daily: () =>
+        api.questions.get<QuestionDetailDto, QuestionDetailDto>(
+          QuestionRoutes.DAILY
+        ),
+      detail: (id: string) =>
+        api.questions.get<QuestionDetailDto, QuestionDetailDto>(id),
+      answer: (id: string, dto: CreateAnswerDto) =>
+        api.answers.post<QuestionDetailDto, QuestionDetailDto>(
+          AnswerRoutes.QUESTION_ID.replace(":id", id),
+          dto
+        ),
+    };
+    return { users, questions };
+  }, [idToken, hasRefreshToken, onRefreshAuth]);
+
+  return (
+    <ApiContext.Provider value={endpoints}>{children}</ApiContext.Provider>
+  );
 };

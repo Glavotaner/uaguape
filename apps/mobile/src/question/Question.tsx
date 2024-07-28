@@ -29,9 +29,9 @@ const useDailyQuestion = ({ navigation }: HomeProps) => {
 
   const fetchDailyQuestion = async () => {
     try {
-      const { data } = await questions.get(QuestionRoutes.DAILY);
-      setDailyQuestion(data);
-      navigation.navigate("Question", { id: data.id });
+      const question = await questions.daily();
+      setDailyQuestion(question);
+      navigation.navigate("Question", { id: question.id });
     } catch (error) {
       console.error(error);
     }
@@ -110,7 +110,7 @@ const QuestionItem = ({
 const useQuestion = (id: string) => {
   const [answer, setAnswer] = useState<string>("");
   const [question, setQuestion] = useState<QuestionDetailDto | null>(null);
-  const { questions, answers } = useApi();
+  const { questions } = useApi();
 
   useEffect(() => {
     getQuestion();
@@ -118,8 +118,8 @@ const useQuestion = (id: string) => {
 
   const getQuestion = async () => {
     try {
-      const { data } = await questions.get(id);
-      setQuestion(data);
+      const response = await questions.detail(id);
+      setQuestion(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error(error.response?.data);
@@ -131,8 +131,8 @@ const useQuestion = (id: string) => {
     const dto: CreateAnswerDto = {
       content: answer,
     };
-    await answers.post(AnswerRoutes.QUESTION_ID.replace(":id", id), dto);
-    getQuestion();
+    const answeredQuestion = await questions.answer(id, dto);
+    setQuestion(answeredQuestion);
   }, [answer, id]);
 
   return { question, answer, onAnswerChange: setAnswer, answerQuestion };
