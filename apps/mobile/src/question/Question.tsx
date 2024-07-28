@@ -13,18 +13,19 @@ import {
   QuestionDetailDto,
   QuestionDto,
 } from "uaguape-common";
-import { AnswerRoutes, QuestionRoutes } from "uaguape-routes";
 import axios from "axios";
 import { Answer, QuestionAnswer } from "../answer/Answer";
 import { Label } from "../shared/components/label/Label";
-import { useApi } from "../shared/context/ApiProvider";
 import { HomeProps, QuestionProps } from "../shared/types/screen-props";
 import { useTheme } from "../shared/context/ThemeProvider";
 import { useMessaging } from "../shared/hooks/messaging";
+import { useQuestions } from "../shared/hooks/questions";
+import { useAnswers } from "../shared/hooks/answers";
 
 const useDailyQuestion = ({ navigation }: HomeProps) => {
   const [dailyQuestion, setDailyQuestion] = useState<QuestionDto | null>(null);
-  const { questions } = useApi();
+  const questions = useQuestions();
+
   useMessaging();
 
   const fetchDailyQuestion = async () => {
@@ -110,7 +111,8 @@ const QuestionItem = ({
 const useQuestion = (id: string) => {
   const [answer, setAnswer] = useState<string>("");
   const [question, setQuestion] = useState<QuestionDetailDto | null>(null);
-  const { questions } = useApi();
+  const questions = useQuestions();
+  const answers = useAnswers();
 
   useEffect(() => {
     getQuestion();
@@ -118,7 +120,7 @@ const useQuestion = (id: string) => {
 
   const getQuestion = async () => {
     try {
-      const response = await questions.detail(id);
+      const response = await questions.get(id);
       setQuestion(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -128,11 +130,10 @@ const useQuestion = (id: string) => {
   };
 
   const answerQuestion = useCallback(async () => {
-    const dto: CreateAnswerDto = {
+    await answers.create(id, {
       content: answer,
-    };
-    const answeredQuestion = await questions.answer(id, dto);
-    setQuestion(answeredQuestion);
+    });
+    getQuestion();
   }, [answer, id]);
 
   return { question, answer, onAnswerChange: setAnswer, answerQuestion };

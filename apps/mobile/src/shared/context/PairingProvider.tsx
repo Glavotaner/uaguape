@@ -6,8 +6,7 @@ import {
   useState,
 } from "react";
 import { Linking, ToastAndroid } from "react-native";
-import { useApi } from "./ApiProvider";
-import { PairRoutes, UserRoutes } from "uaguape-routes";
+import { usePairs } from "../hooks/pairs";
 
 const PairingContext = createContext<{
   pairId: string | null;
@@ -29,7 +28,7 @@ export const PairingProvider = ({
   children: React.ReactNode;
 }) => {
   const [pairId, setPairId] = useState<string | null>(null);
-  const { pairs } = useApi();
+  const pairs = usePairs();
 
   const parsePairId = (url: string) => url.split("uaguape://pair/").pop()!;
 
@@ -50,7 +49,7 @@ export const PairingProvider = ({
   }, []);
 
   const confirmPair = useCallback(async () => {
-    await pairs.patch(PairRoutes.ID.replace(":pairId", pairId!));
+    await pairs.setPair(pairId!);
     setPairId(null);
     ToastAndroid.show("Paired successfully", ToastAndroid.SHORT);
   }, [pairId]);

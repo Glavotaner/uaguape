@@ -1,14 +1,12 @@
 import { Button, Share, View } from "react-native";
-import { useApi } from "../shared/context/ApiProvider";
-import { PairRoutes } from "uaguape-routes";
 import { PairingProps } from "../shared/types/screen-props";
+import { usePairs } from "../shared/hooks/pairs";
 
 export const Pairing = ({ navigation }: PairingProps) => {
-  const { pairs } = useApi();
+  const { getPairingCode } = usePairs();
 
   const generatePairingCode = async () => {
-    const response = await pairs.get(PairRoutes.GENERATE_PAIR_CODE);
-    const pairingUrl = response.data;
+    const pairingUrl = await getPairingCode();
     const result = await Share.share(
       {
         message: `Click on this link to join me! ${pairingUrl}`,

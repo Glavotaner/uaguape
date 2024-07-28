@@ -1,16 +1,10 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect } from "react";
-import {
-  Button,
-  Pressable,
-  SafeAreaView,
-  StatusBar,
-  useColorScheme,
-} from "react-native";
+import { Button, SafeAreaView, StatusBar, useColorScheme } from "react-native";
 import { AuthError } from "./src/error/Error";
 import { Home, Question } from "./src/question/Question";
-import { ApiProvider, useApi } from "./src/shared/context/ApiProvider";
+import { ApiProvider } from "./src/shared/context/ApiProvider";
 import { AuthProvider, useAuth } from "./src/shared/context/AuthProvider";
 import { RootStackParamList } from "./src/shared/types/root-stack-param-list";
 import { SplashScreen } from "./src/splash/Splash";
@@ -59,7 +53,6 @@ const Navigation = () => {
   const [image, setImage] = React.useState(null);
 
   const { hasAuth, isAuthReady } = useAuth();
-  const { users } = useApi();
 
   useEffect(() => {
     const fetchImage = async () => {
