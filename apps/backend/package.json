@@ -32,9 +32,9 @@
     "firebase-admin": "^12.2.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "uaguape-common": "*",
-    "uaguape-db": "*",
-    "uaguape-routes": "*"
+    "@uaguape/common": "*",
+    "@uaguape/db": "*",
+    "@uaguape/routes": "*"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

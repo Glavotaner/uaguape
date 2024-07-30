@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
 import { SetMetadata } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { PrismaService } from 'uaguape-db';
+import { PrismaService } from '@uaguape/db';
 
 export const DOES_NOT_REQUIRE_USER = 'doesNotRequireUser';
 export const DoesNotRequireUser = () =>

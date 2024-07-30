@@ -1,6 +1,6 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { TokenizedUserDto } from 'uaguape-common';
-import { PrismaService } from 'uaguape-db';
+import { TokenizedUserDto } from '@uaguape/common';
+import { PrismaService } from '@uaguape/db';
 
 @Injectable()
 export class UserIdPipe implements PipeTransform {

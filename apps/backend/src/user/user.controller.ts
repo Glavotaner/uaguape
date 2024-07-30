@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, TokenizedUserDto, UpdateUserDto } from 'uaguape-common';
-import { UserRoutes } from 'uaguape-routes';
+import {
+  CreateUserDto,
+  TokenizedUserDto,
+  UpdateUserDto,
+} from '@uaguape/common';
+import { UserRoutes } from '@uaguape/routes';
 import { GetUser } from 'src/global/decorators/user.decorator';
 import { ApiTags } from '@nestjs/swagger';
 import { GetUserId } from 'src/global/decorators/user-id.decorator';

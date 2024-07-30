@@ -1,6 +1,6 @@
 import { Controller, Get, Param, PipeTransform } from '@nestjs/common';
 import { QuestionService } from './question.service';
-import { QuestionRoutes } from 'uaguape-routes';
+import { QuestionRoutes } from '@uaguape/routes';
 import { GetUserId } from 'src/global/decorators/user-id.decorator';
 import { ApiTags } from '@nestjs/swagger';
 

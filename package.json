@@ -4,6 +4,6 @@
     "version": "1.0.0",
     "workspaces": [
         "apps/*",
-        "packages/*"
+        "packages/@uaguape/*"
     ]
 }

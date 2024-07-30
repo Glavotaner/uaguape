@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PrismaService } from 'uaguape-db';
+import { PrismaService } from '@uaguape/db';
 import { Prisma } from '@prisma/client';
 import { endOfDay, startOfDay } from 'date-fns';
 

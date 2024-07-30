@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from 'uaguape-common';
+import { CreateUserDto, UpdateUserDto } from '@uaguape/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from 'uaguape-db';
+import { PrismaService } from '@uaguape/db';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

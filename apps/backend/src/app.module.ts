@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { ScheduleModule } from '@nestjs/schedule';
-import { PrismaModule } from 'uaguape-db';
+import { PrismaModule } from '@uaguape/db';
 import { AnswerModule } from './answer/answer.module';
 import { TokenGuard } from './global/guards/token.guard';
 import { UserExistsGuard } from './global/guards/user-exists.guard';

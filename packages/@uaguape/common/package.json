@@ -1,11 +1,12 @@
 {
-  "name": "uaguape-routes",
+  "name": "@uaguape/common",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "license": "MIT",
   "private": true,
+  "license": "MIT",
   "dependencies": {
+    "@nestjs/mapped-types": "^2.0.5",
     "typescript": "^5.5.3"
   },
   "scripts": {

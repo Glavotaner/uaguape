@@ -1,5 +1,5 @@
 {
-  "name": "uaguape-db",
+  "name": "@uaguape/db",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",

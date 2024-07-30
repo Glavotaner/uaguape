@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'uaguape-db';
+import { PrismaService } from '@uaguape/db';
 import { Prisma } from '@prisma/client';
 import { NotificationService } from 'src/notification/notification.service';
 
