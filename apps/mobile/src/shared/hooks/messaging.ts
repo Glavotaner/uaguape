@@ -1,7 +1,7 @@
 import messaging from "@react-native-firebase/messaging";
 import { PermissionsAndroid, Platform, ToastAndroid } from "react-native";
 import { useApi } from "../context/ApiProvider";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UpdateUserDto } from "@uaguape/common";
 
 const messagingClient = messaging();
@@ -14,6 +14,11 @@ export const useMessaging = () => {
   useEffect(() => {
     setup();
   }, []);
+
+  const updateUser = useCallback(
+    (pushToken?: string) => users.patch("", { pushToken }),
+    [users]
+  );
 
   useEffect(() => {
     const subscribers: (() => void)[] = [];
@@ -41,7 +46,7 @@ export const useMessaging = () => {
           }
         }),
         messagingClient.onTokenRefresh((pushToken) => {
-          users.update({ pushToken });
+          updateUser(pushToken);
         })
       );
     }
@@ -76,7 +81,7 @@ export const useMessaging = () => {
         // TODO do something
       }
       const pushToken = await getToken();
-      users.update({ pushToken });
+      updateUser(pushToken);
     }
   };
 };

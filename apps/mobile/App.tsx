@@ -85,20 +85,22 @@ const Navigation = () => {
         />
       ) : (
         <>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ title: "Questions" }}
-          />
-          <Stack.Screen
-            name="Question"
-            component={Question}
-            options={{
-              headerBackVisible: true,
-              animation: "fade_from_bottom",
-              title: "Question",
-            }}
-          />
+          <Stack.Group>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{ title: "Questions" }}
+            />
+            <Stack.Screen
+              name="Question"
+              component={Question}
+              options={{
+                headerBackVisible: true,
+                animation: "fade_from_bottom",
+                title: "Question",
+              }}
+            />
+          </Stack.Group>
 
           <Stack.Screen
             name="Pairing"

@@ -3,9 +3,9 @@ import React, {
   ReactNode,
   useContext,
   useEffect,
-  useCallback,
+  useState,
 } from "react";
-import axios, { AxiosError, AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { REACT_APP_BASE_URL } from "@env";
 import {
   AnswerRoutes,
@@ -39,52 +39,40 @@ export const useApi = () => useContext(ApiContext);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { idToken, hasRefreshToken, onRefreshAuth } = useAuth();
-
-  const interceptor = useCallback(
-    async (error: AxiosError) => {
-      const isUnauthorized = error.response?.status === 403;
-      if (isUnauthorized && hasRefreshToken) {
-        const refreshedToken = await onRefreshAuth();
-        if (!refreshedToken) {
-          throw new Error("Unauthorized");
-        }
-        const retriedResponse = await axios.request({
-          ...error.config,
-          headers: { Authorization: `Bearer ${refreshedToken}` },
-        });
-        return retriedResponse;
-      }
-      throw error;
-    },
-    [hasRefreshToken, onRefreshAuth]
-  );
-
-  const getRoute = (controller: string) => `${REACT_APP_BASE_URL}${controller}`;
-
-  const api = {
-    users: axios.create({ baseURL: getRoute(UserRoutes.BASE) }),
-    answers: axios.create({ baseURL: getRoute(AnswerRoutes.BASE) }),
-    pairs: axios.create({ baseURL: getRoute(PairRoutes.BASE) }),
-    questions: axios.create({ baseURL: getRoute(QuestionRoutes.BASE) }),
-  };
-
-  const controllers = Object.values(api);
-
-  controllers.forEach((controller) =>
-    controller.interceptors.response.use(
-      (response) => response.data,
-      interceptor
-    )
-  );
+  const [api, setApi] = useState<ControllerAxiosInstances>({} as any);
 
   useEffect(() => {
     if (idToken) {
       const authorization = `Bearer ${idToken}`;
-      controllers.forEach((controller) => {
-        controller.defaults.headers.Authorization = authorization;
-      });
+      const newApi = controllers.reduce((acc, controller) => {
+        const instance = axios.create({
+          baseURL: `${REACT_APP_BASE_URL}${controller}`,
+          headers: { Authorization: authorization },
+        });
+        instance.interceptors.response.use(
+          (response: AxiosResponse) => response.data,
+          async (error: AxiosError) => {
+            const isUnauthorized = error.response?.status === 403;
+            if (isUnauthorized && hasRefreshToken) {
+              const refreshedToken = await onRefreshAuth();
+              if (!refreshedToken) {
+                throw new Error("Unauthorized");
+              }
+              const retriedResponse = await axios.request({
+                ...error.config,
+                headers: { Authorization: `Bearer ${refreshedToken}` },
+              });
+              return retriedResponse;
+            }
+            throw error;
+          }
+        );
+        acc[controller] = instance;
+        return acc;
+      }, {} as ControllerAxiosInstances);
+      setApi(newApi);
     }
-  }, [idToken]);
+  }, [idToken, hasRefreshToken, onRefreshAuth]);
 
   return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
 };
