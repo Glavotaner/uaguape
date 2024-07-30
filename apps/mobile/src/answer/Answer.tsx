@@ -1,4 +1,10 @@
-import { View, TextInput, Pressable } from "react-native";
+import {
+  View,
+  TextInput,
+  Pressable,
+  useWindowDimensions,
+  ActivityIndicator,
+} from "react-native";
 import { AnswerDto } from "@uaguape/common";
 import { Label } from "../shared/components/label/Label";
 import { useTheme } from "../shared/context/ThemeProvider";
@@ -7,11 +13,14 @@ export const QuestionAnswer = ({
   answer,
   onAnswerSend,
   onAnswerChange,
+  isLoading,
 }: {
   answer: string;
   onAnswerChange: (answer: string) => void;
   onAnswerSend: () => void;
+  isLoading: boolean;
 }) => {
+  const { colors } = useTheme();
   return (
     <View
       style={{
@@ -26,6 +35,8 @@ export const QuestionAnswer = ({
         value={answer}
         placeholder="Answer..."
         onChangeText={onAnswerChange}
+        style={{ color: colors.text }}
+        placeholderTextColor={colors.text}
       />
       <Pressable
         style={{
@@ -36,11 +47,11 @@ export const QuestionAnswer = ({
         }}
         onPress={onAnswerSend}
       >
-        <Label
-          style={{ color: "black", paddingHorizontal: 10, paddingVertical: 5 }}
-        >
-          Send
-        </Label>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <Label style={{ color: colors.text, padding: 10 }}>Send</Label>
+        )}
       </Pressable>
     </View>
   );
@@ -48,6 +59,7 @@ export const QuestionAnswer = ({
 
 export const Answer = (answer: AnswerDto) => {
   const { colors, text } = useTheme();
+  const { width } = useWindowDimensions();
   return (
     <View
       style={{
@@ -56,12 +68,16 @@ export const Answer = (answer: AnswerDto) => {
         columnGap: 10,
         padding: 10,
         borderRadius: 10,
+        maxWidth: width * 0.95,
+        alignItems: "center",
       }}
     >
-      <Label style={{ fontWeight: "bold", fontSize: text.size.large }}>
+      <Label style={{ fontWeight: "bold", fontSize: text.size.medium }}>
         {answer.user.name}
       </Label>
-      <Label style={{ fontSize: text.size.large }}>{answer.content}</Label>
+      <Label style={{ fontSize: text.size.small, flexShrink: 1 }}>
+        {answer.content}
+      </Label>
     </View>
   );
 };

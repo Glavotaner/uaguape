@@ -111,11 +111,17 @@ const QuestionItem = ({
 const useQuestion = (id: string) => {
   const [answer, setAnswer] = useState<string>("");
   const [question, setQuestion] = useState<QuestionDetailDto | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const questions = useQuestions();
   const answers = useAnswers();
 
   useEffect(() => {
-    getQuestion();
+    const fetchQuestion = async () => {
+      setIsLoading(true);
+      await getQuestion();
+      setIsLoading(false);
+    };
+    fetchQuestion();
   }, [id]);
 
   const getQuestion = async () => {
@@ -130,19 +136,26 @@ const useQuestion = (id: string) => {
   };
 
   const answerQuestion = useCallback(async () => {
+    setIsLoading(true);
     await answers.create(id, {
       content: answer,
     });
-    getQuestion();
+    await getQuestion();
+    setIsLoading(false);
   }, [answer, id]);
 
-  return { question, answer, onAnswerChange: setAnswer, answerQuestion };
+  return {
+    question,
+    answer,
+    onAnswerChange: setAnswer,
+    answerQuestion,
+    isLoading,
+  };
 };
 
 export const Question = ({ route: { params } }: QuestionProps) => {
-  const { question, answer, onAnswerChange, answerQuestion } = useQuestion(
-    params.id
-  );
+  const { question, answer, onAnswerChange, answerQuestion, isLoading } =
+    useQuestion(params.id);
 
   const AnswerItem = useCallback(
     ({ item }: ListRenderItemInfo<AnswerDto>) => {
@@ -194,6 +207,7 @@ export const Question = ({ route: { params } }: QuestionProps) => {
           onAnswerChange={onAnswerChange}
           answer={answer}
           onAnswerSend={answerQuestion}
+          isLoading={isLoading}
         />
       </View>
     </View>
