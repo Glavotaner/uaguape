@@ -8,8 +8,8 @@ import {
 import { UserRoutes } from '@uaguape/routes';
 import { GetUser } from 'src/global/decorators/user.decorator';
 import { ApiTags } from '@nestjs/swagger';
-import { GetUserId } from 'src/global/decorators/user-id.decorator';
-import { DoesNotRequireUser } from 'src/global/guards/user-exists.guard';
+import { GetUserId } from '@global/decorators/user-id.decorator';
+import { DoesNotRequireUser } from '@global/guards/user-exists.guard';
 
 @Controller(UserRoutes.BASE)
 @ApiTags(UserRoutes.BASE)

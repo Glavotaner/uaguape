@@ -2,9 +2,8 @@ import { Body, Controller, Param, Post } from '@nestjs/common';
 import { AnswerService } from './answer.service';
 import { CreateAnswerDto, TokenizedUserDto } from '@uaguape/common';
 import { AnswerRoutes } from '@uaguape/routes';
-import { GetUserId } from 'src/global/decorators/user-id.decorator';
 import { ApiTags } from '@nestjs/swagger';
-import { GetUser } from 'src/global/decorators/user.decorator';
+import { GetUser, GetUserId } from '@global/decorators';
 
 const QUESTION_ID = AnswerRoutes.QUESTION_ID.replace('question/:', '');
 

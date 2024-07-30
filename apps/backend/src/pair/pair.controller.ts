@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Patch } from '@nestjs/common';
 import { PairRoutes } from '@uaguape/routes';
-import { GetUserId } from 'src/global/decorators/user-id.decorator';
 import { PairService } from './pair.service';
 import { ApiTags } from '@nestjs/swagger';
+import { GetUserId } from '@global/decorators';
 
 const PAIR_ID = PairRoutes.ID.replace(':', '');
 
