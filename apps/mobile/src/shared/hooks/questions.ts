@@ -1,6 +1,6 @@
-import { QuestionRoutes } from "uaguape-routes";
+import { QuestionRoutes } from "@uaguape/routes";
 import { useApi } from "../context/ApiProvider";
-import { QuestionDetailDto } from "uaguape-common";
+import { QuestionDetailDto } from "@uaguape/common";
 
 export const useQuestions = () => {
   const { questions } = useApi();

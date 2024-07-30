@@ -1,5 +1,5 @@
 import { Command, CommandRunner } from 'nest-commander';
-import { PrismaService } from 'uaguape-db';
+import { PrismaService } from '@uaguape/db';
 import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 import { InternalServerErrorException } from '@nestjs/common';
@@ -33,5 +33,4 @@ export class DailyQuestionSetterCommand extends CommandRunner {
       data: { displayedOn: now },
     });
   }
-
 }

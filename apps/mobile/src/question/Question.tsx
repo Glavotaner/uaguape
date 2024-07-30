@@ -12,7 +12,7 @@ import {
   CreateAnswerDto,
   QuestionDetailDto,
   QuestionDto,
-} from "uaguape-common";
+} from "@uaguape/common";
 import axios from "axios";
 import { Answer, QuestionAnswer } from "../answer/Answer";
 import { Label } from "../shared/components/label/Label";

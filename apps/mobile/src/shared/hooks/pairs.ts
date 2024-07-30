@@ -1,6 +1,6 @@
-import { UserDto } from "uaguape-common";
+import { UserDto } from "@uaguape/common";
 import { useApi } from "../context/ApiProvider";
-import { PairRoutes } from "uaguape-routes";
+import { PairRoutes } from "@uaguape/routes";
 
 export const usePairs = () => {
   const { pairs } = useApi();

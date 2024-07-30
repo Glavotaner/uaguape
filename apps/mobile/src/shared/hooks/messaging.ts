@@ -2,7 +2,7 @@ import messaging from "@react-native-firebase/messaging";
 import { PermissionsAndroid, Platform, ToastAndroid } from "react-native";
 import { useApi } from "../context/ApiProvider";
 import { useEffect, useState } from "react";
-import { UpdateUserDto } from "uaguape-common";
+import { UpdateUserDto } from "@uaguape/common";
 
 const messagingClient = messaging();
 

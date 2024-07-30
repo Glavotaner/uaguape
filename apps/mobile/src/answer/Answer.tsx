@@ -1,5 +1,5 @@
 import { View, TextInput, Pressable } from "react-native";
-import { AnswerDto } from "uaguape-common";
+import { AnswerDto } from "@uaguape/common";
 import { Label } from "../shared/components/label/Label";
 import { useTheme } from "../shared/context/ThemeProvider";
 

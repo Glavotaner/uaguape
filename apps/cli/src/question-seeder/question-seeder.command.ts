@@ -1,7 +1,7 @@
 import { Command, CommandRunner } from 'nest-commander';
 import axios from 'axios';
 import { load } from 'cheerio';
-import { PrismaService } from 'uaguape-db';
+import { PrismaService } from '@uaguape/db';
 import { Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 

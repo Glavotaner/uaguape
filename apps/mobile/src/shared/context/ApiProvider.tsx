@@ -12,7 +12,7 @@ import {
   PairRoutes,
   QuestionRoutes,
   UserRoutes,
-} from "uaguape-routes";
+} from "@uaguape/routes";
 import { useAuth } from "./AuthProvider";
 
 const controllers = [

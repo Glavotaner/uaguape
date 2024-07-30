@@ -1,4 +1,4 @@
-import { UpdateUserDto, UserDto } from "uaguape-common";
+import { UpdateUserDto, UserDto } from "@uaguape/common";
 import { useApi } from "../context/ApiProvider";
 
 export const useUsers = () => {

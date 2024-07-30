@@ -14,7 +14,7 @@ import {
 } from "@env";
 import { StorageKeys, useStorage } from "../hooks/storage";
 import axios from "axios";
-import { UserRoutes } from "uaguape-routes";
+import { UserRoutes } from "@uaguape/routes";
 
 type AuthState = {
   idToken: string;

@@ -1,7 +1,7 @@
 import { Button, View } from "react-native";
 import { PairingRequestProps } from "../shared/types/screen-props";
 import { useEffect, useState } from "react";
-import { PairRoutes } from "uaguape-routes";
+import { PairRoutes } from "@uaguape/routes";
 import { Label } from "../shared/components/label/Label";
 import { useTheme } from "../shared/context/ThemeProvider";
 import { usePairing } from "../shared/context/PairingProvider";
