@@ -18,6 +18,7 @@ model User {
   name     String
   email String @unique
   pushToken String?
+  picture  String?
   pairId String? @unique
   pair User? @relation("Pair", fields: [pairId], references: [id])
   pairedWith User? @relation("Pair")

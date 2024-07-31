@@ -24,20 +24,20 @@ export class AnswerService {
     userId: string,
   ) {
     await this._answer.create({ data: { ...data, questionId, userId } });
-    const pair = await this._user.findUnique({
-      where: { pairId: userId },
-      select: { pushToken: true, answers: { where: { questionId } } },
-    });
-    if (pair.pushToken != null) {
-      const pairHasAlreadyAnswered = pair.answers.length > 0;
-      const message = `${user.name} has answered today's question!`;
-      this.notificationService.create({
-        token: pair.pushToken,
-        title: 'Answer',
-        body: pairHasAlreadyAnswered
-          ? message
-          : `${message} Submit your answer to see theirs!`,
-      });
-    }
+    // const pair = await this._user.findUnique({
+    //   where: { pairId: userId },
+    //   select: { pushToken: true, answers: { where: { questionId } } },
+    // });
+    // if (pair.pushToken != null) {
+    //   const pairHasAlreadyAnswered = pair.answers.length > 0;
+    //   const message = `${user.name} has answered today's question!`;
+    //   this.notificationService.create({
+    //     token: pair.pushToken,
+    //     title: 'Answer',
+    //     body: pairHasAlreadyAnswered
+    //       ? message
+    //       : `${message} Submit your answer to see theirs!`,
+    //   });
+    // }
   }
 }

@@ -4,6 +4,7 @@ import {
   Pressable,
   useWindowDimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { AnswerDto } from "@uaguape/common";
 import { Label } from "../shared/components/label/Label";
@@ -72,9 +73,10 @@ export const Answer = (answer: AnswerDto) => {
         alignItems: "center",
       }}
     >
-      <Label style={{ fontWeight: "bold", fontSize: text.size.medium }}>
-        {answer.user.name}
-      </Label>
+      {answer.user.picture && (
+        <Image source={{ uri: answer.user.picture }} width={50} height={50} />
+      )}
+
       <Label style={{ fontSize: text.size.small, flexShrink: 1 }}>
         {answer.content}
       </Label>

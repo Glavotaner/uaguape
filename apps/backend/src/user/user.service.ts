@@ -1,26 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from '@uaguape/common';
+import { TokenizedUserDto, UpdateUserDto } from '@uaguape/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '@uaguape/db';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
   private readonly _user: Prisma.UserDelegate;
 
-  constructor(
-    prismaService: PrismaService,
-    private readonly configService: ConfigService,
-  ) {
+  constructor(prismaService: PrismaService) {
     this._user = prismaService.user;
   }
 
-  create({ email, name }: CreateUserDto) {
+  create({ email, name, picture }: TokenizedUserDto) {
     // TODO fix oauth scopes
-
+    const dto = { email, name, picture };
     return this._user.upsert({
-      create: { email, name },
-      update: { email, name },
+      create: dto,
+      update: dto,
       where: { email },
     });
   }

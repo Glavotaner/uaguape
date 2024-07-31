@@ -18,7 +18,7 @@ export class UserController {
 
   @Post(UserRoutes.REGISTER)
   @DoesNotRequireUser()
-  create(@GetUser() dto: CreateUserDto) {
+  create(@GetUser() dto: TokenizedUserDto) {
     return this.userService.create(dto);
   }
 

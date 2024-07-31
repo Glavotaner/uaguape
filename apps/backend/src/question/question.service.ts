@@ -38,6 +38,10 @@ export class QuestionService {
       answers: question.answers.map((answer) => ({
         ...answer,
         isMyAnswer: answer.user.id === userId,
+        user: {
+          ...answer.user,
+          picture: answer.user.id === userId ? answer.user.picture : null,
+        },
       })),
     };
   }

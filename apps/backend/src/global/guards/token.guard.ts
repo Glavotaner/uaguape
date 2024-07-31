@@ -1,13 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { TokenizedUserDto } from '@uaguape/common';
 
 @Injectable()
 export class TokenGuard implements CanActivate {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
-  ) {}
+  constructor(private readonly jwtService: JwtService) {}
 
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
@@ -18,12 +15,18 @@ export class TokenGuard implements CanActivate {
       return false;
     }
 
-    const user = this.jwtService.decode(token) ?? {};
+    const user: TokenizedUserDto & { exp: number } =
+      this.jwtService.decode(token);
 
-    const tokenIsValid = Date.now() < user.exp * 1000;
-    if (tokenIsValid) {
-      request.user = user;
+    const isValidJwt = Object.keys(user).length > 0;
+
+    if (isValidJwt) {
+      const tokenIsValid = Date.now() < user.exp * 1000;
+      if (tokenIsValid) {
+        request.user = user;
+      }
+      return tokenIsValid;
     }
-    return tokenIsValid;
+    return false;
   }
 }

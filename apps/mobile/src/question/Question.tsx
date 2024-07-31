@@ -34,7 +34,7 @@ const useDailyQuestion = ({ navigation }: HomeProps) => {
       setDailyQuestion(question);
       navigation.navigate("Question", { id: question.id });
     } catch (error) {
-      console.error(error);
+      console.warn(error);
     }
   };
 
