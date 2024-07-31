@@ -4,17 +4,13 @@ import { CreateAnswerDto, TokenizedUserDto } from '@uaguape/common';
 import { AnswerRoutes } from '@uaguape/routes';
 import { ApiTags } from '@nestjs/swagger';
 import { GetUser, GetUserId } from '@global/decorators';
-import { WebsocketService } from '@global/gateway/websocket.service';
 
 const QUESTION_ID = AnswerRoutes.QUESTION_ID.replace('question/:', '');
 
 @Controller(AnswerRoutes.BASE)
 @ApiTags(AnswerRoutes.BASE)
 export class AnswerController {
-  constructor(
-    private readonly answerService: AnswerService,
-    private readonly websocketService: WebsocketService,
-  ) {}
+  constructor(private readonly answerService: AnswerService) {}
 
   @Post(AnswerRoutes.QUESTION_ID)
   create(
@@ -25,13 +21,5 @@ export class AnswerController {
   ) {
     // TODO clean this up
     return this.answerService.create(data, questionId, user, userId);
-  }
-
-  @Post(AnswerRoutes.TYPING)
-  sendTypingIndicator(
-    @Param(':id') questionId: string,
-    @GetUserId() userId: string,
-  ) {
-    this.websocketService.send(questionId, userId);
   }
 }
