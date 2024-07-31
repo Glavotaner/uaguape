@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import config from './configuration/configuration';
 import { NotificationModule } from './notification/notification.module';
+import { WebsocketModule } from '@global/gateway/websocket.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { NotificationModule } from './notification/notification.module';
     PairModule,
     JwtModule,
     PrismaModule,
+    WebsocketModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: TokenGuard },
