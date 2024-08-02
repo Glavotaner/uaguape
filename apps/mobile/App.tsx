@@ -9,7 +9,7 @@ import {
   useColorScheme,
 } from "react-native";
 import { AuthError } from "./src/error/Error";
-import { Home, Question } from "./src/question/Question";
+import { Home } from "./src/question/Home";
 import { ApiProvider } from "./src/shared/context/ApiProvider";
 import { AuthProvider, useAuth } from "./src/shared/context/AuthProvider";
 import { RootStackParamList } from "./src/shared/types/root-stack-param-list";
@@ -26,6 +26,7 @@ import {
   useMessaging,
 } from "./src/shared/context/MessagingProvider";
 import { AuthorizedStackParamList } from "./src/shared/types/authorized-stack-param.list";
+import { Question } from "./src/question/components/Question/Question";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
