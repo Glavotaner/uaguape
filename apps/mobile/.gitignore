@@ -41,6 +41,8 @@ android/local.properties
 /captures/
 /outputs/
 /android/app/build/
+/android/app/src/main/assets/index.android.bundle
+/android/app/src/main/res/drawable*/__node_modules*
 
 # IDE settings
 .idea/
