@@ -5,11 +5,15 @@ import { AnswerRoutes } from "@uaguape/routes";
 export const useAnswers = () => {
   const { answers } = useApi();
 
+  const questionIdUrl = (questionId: string) =>
+    AnswerRoutes.QUESTION_ID.replace(":id", questionId);
+
   return {
-    answers: (questionId: string) => answers.get<AnswerDto[]>(questionId),
+    answers: (questionId: string) =>
+      answers.get<AnswerDto[], AnswerDto[]>(questionIdUrl(questionId)),
     create: (questionId: string, data: CreateAnswerDto) =>
       answers.post<AnswerDto[], AnswerDto[], CreateAnswerDto>(
-        AnswerRoutes.QUESTION_ID.replace(":id", questionId),
+        questionIdUrl(questionId),
         data
       ),
   };

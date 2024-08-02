@@ -1,7 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useEffect } from "react";
-import { Button, SafeAreaView, StatusBar, useColorScheme } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import {
+  Button,
+  SafeAreaView,
+  StatusBar,
+  ToastAndroid,
+  useColorScheme,
+} from "react-native";
 import { AuthError } from "./src/error/Error";
 import { Home, Question } from "./src/question/Question";
 import { ApiProvider } from "./src/shared/context/ApiProvider";
@@ -15,7 +21,11 @@ import {
   PairingProvider,
   usePairing,
 } from "./src/shared/context/PairingProvider";
-import { Label } from "./src/shared/components/label/Label";
+import {
+  MessagingProvider,
+  useMessaging,
+} from "./src/shared/context/MessagingProvider";
+import { AuthorizedStackParamList } from "./src/shared/types/authorized-stack-param.list";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -35,11 +45,9 @@ function App(): React.JSX.Element {
         />
         <AuthProvider>
           <ApiProvider>
-            <PairingProvider>
-              <NavigationContainer theme={theme}>
-                <Navigation />
-              </NavigationContainer>
-            </PairingProvider>
+            <NavigationContainer theme={theme}>
+              <Navigation />
+            </NavigationContainer>
           </ApiProvider>
         </AuthProvider>
       </SafeAreaView>
@@ -49,21 +57,18 @@ function App(): React.JSX.Element {
 
 const Navigation = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
-
-  const [image, setImage] = React.useState(null);
-
   const { hasAuth, isAuthReady } = useAuth();
 
-  useEffect(() => {
-    const fetchImage = async () => {
-      // TODO fetch image
-    };
-    if (isAuthReady && hasAuth && !image) {
-      fetchImage();
-    }
-  }, [isAuthReady]);
-
-  const { hasPair: hasPairId, pairId, cancelPair } = usePairing();
+  const Authorized = useCallback(
+    () => (
+      <PairingProvider>
+        <MessagingProvider>
+          <AuthorizedStack />
+        </MessagingProvider>
+      </PairingProvider>
+    ),
+    []
+  );
 
   return (
     <Stack.Navigator>
@@ -71,7 +76,36 @@ const Navigation = () => {
         <Stack.Screen name="Splash" component={SplashScreen} />
       ) : !hasAuth ? (
         <Stack.Screen name="AuthError" component={AuthError} />
-      ) : hasPairId ? (
+      ) : (
+        <Stack.Screen
+          name="Authorized"
+          component={Authorized}
+          options={{
+            headerShown: false,
+          }}
+        />
+      )}
+    </Stack.Navigator>
+  );
+};
+
+const AuthorizedStack = () => {
+  const Stack = createNativeStackNavigator<AuthorizedStackParamList>();
+  const { hasPair, pairId, cancelPair } = usePairing();
+  const { receivedMessage } = useMessaging();
+
+  useEffect(() => {
+    if (receivedMessage) {
+      ToastAndroid.show(
+        receivedMessage.body ?? receivedMessage.title!,
+        ToastAndroid.SHORT
+      );
+    }
+  }, [receivedMessage]);
+
+  return (
+    <Stack.Navigator>
+      {hasPair ? (
         <Stack.Screen
           name="PairingRequest"
           component={PairingRequest}
@@ -85,23 +119,20 @@ const Navigation = () => {
         />
       ) : (
         <>
-          <Stack.Group>
-            <Stack.Screen
-              name="Home"
-              component={Home}
-              options={{ title: "Questions" }}
-            />
-            <Stack.Screen
-              name="Question"
-              component={Question}
-              options={{
-                headerBackVisible: true,
-                animation: "fade_from_bottom",
-                title: "Question",
-              }}
-            />
-          </Stack.Group>
-
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ title: "Questions" }}
+          />
+          <Stack.Screen
+            name="Question"
+            component={Question}
+            options={{
+              headerBackVisible: true,
+              animation: "fade_from_bottom",
+              title: "Question",
+            }}
+          />
           <Stack.Screen
             name="Pairing"
             component={Pairing}

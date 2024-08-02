@@ -34,7 +34,7 @@ export class QuestionSeederCommand extends CommandRunner {
       );
       const questions = questionsArrays.flat();
       for (const question of questions) {
-        const entity = { description: question, title: question };
+        const entity = { description: question };
         await this.questions.upsert({
           where: entity,
           create: entity,

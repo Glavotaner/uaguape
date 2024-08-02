@@ -23,8 +23,8 @@ export class UserController {
   }
 
   @Get()
-  findOne(@GetUser() user: TokenizedUserDto) {
-    return user;
+  findOne(@GetUserId() userId: string) {
+    return this.userService.user(userId);
   }
 
   @Patch()

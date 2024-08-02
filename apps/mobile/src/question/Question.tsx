@@ -6,27 +6,23 @@ import {
   FlatList,
   ListRenderItemInfo,
   Button,
+  ToastAndroid,
+  Image,
 } from "react-native";
-import {
-  AnswerDto,
-  CreateAnswerDto,
-  QuestionDetailDto,
-  QuestionDto,
-} from "@uaguape/common";
+import { AnswerDto, CreateAnswerDto, QuestionDto } from "@uaguape/common";
 import axios from "axios";
 import { Answer, QuestionAnswer } from "../answer/Answer";
 import { Label } from "../shared/components/label/Label";
 import { HomeProps, QuestionProps } from "../shared/types/screen-props";
 import { useTheme } from "../shared/context/ThemeProvider";
-import { useMessaging } from "../shared/hooks/messaging";
 import { useQuestions } from "../shared/hooks/questions";
 import { useAnswers } from "../shared/hooks/answers";
+import { useMessaging } from "../shared/context/MessagingProvider";
+import { useUsers } from "../shared/hooks/users";
 
 const useDailyQuestion = ({ navigation }: HomeProps) => {
   const [dailyQuestion, setDailyQuestion] = useState<QuestionDto | null>(null);
   const questions = useQuestions();
-
-  useMessaging();
 
   const fetchDailyQuestion = async () => {
     try {
@@ -47,17 +43,37 @@ const useDailyQuestion = ({ navigation }: HomeProps) => {
 
 export const Home = ({ navigation, ...props }: HomeProps) => {
   const { dailyQuestion } = useDailyQuestion({ navigation, ...props });
-  const Pair = () => {
-    return (
-      <View>
-        <Button title="Code" onPress={() => navigation.navigate("Pairing")} />
-      </View>
-    );
-  };
+  const [image, setImage] = useState<string | null>(null);
+  const users = useUsers();
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      const user = await users.get();
+      if (user.picture) {
+        setImage(user.picture);
+      }
+    };
+    fetchProfileImage();
+  }, []);
+
+  const ProfileImage = useCallback(
+    () =>
+      image ? (
+        <Pressable onPress={() => navigation.navigate("Pairing")}>
+          <Image
+            source={{ uri: image }}
+            width={40}
+            height={40}
+            style={{ borderRadius: 20 }}
+          />
+        </Pressable>
+      ) : null,
+    [image]
+  );
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: Pair,
+      headerRight: ProfileImage,
     });
   }, []);
 
@@ -90,7 +106,7 @@ const QuestionItem = ({
   onPress,
   ...question
 }: QuestionDto & { onPress: () => void }) => {
-  const { text, colors } = useTheme();
+  const { colors } = useTheme();
   return (
     <Pressable
       style={{
@@ -102,7 +118,6 @@ const QuestionItem = ({
       }}
       onPress={onPress}
     >
-      <Label style={{ fontSize: text.size.large }}>{question.title}</Label>
       <Label>{question.description}</Label>
     </Pressable>
   );
@@ -110,19 +125,27 @@ const QuestionItem = ({
 
 const useQuestion = (id: string) => {
   const [answer, setAnswer] = useState<string>("");
-  const [question, setQuestion] = useState<QuestionDetailDto | null>(null);
+  const [question, setQuestion] = useState<QuestionDto | null>(null);
+  const [answers, setAnswers] = useState<AnswerDto[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const questions = useQuestions();
-  const answers = useAnswers();
+  const answersApi = useAnswers();
+  const { receivedMessage } = useMessaging();
 
   useEffect(() => {
     const fetchQuestion = async () => {
       setIsLoading(true);
-      await getQuestion();
+      await Promise.all([getQuestion(), getAnswers()]);
       setIsLoading(false);
     };
     fetchQuestion();
   }, [id]);
+
+  useEffect(() => {
+    if (receivedMessage) {
+      getAnswers();
+    }
+  }, [receivedMessage]);
 
   const getQuestion = async () => {
     try {
@@ -135,18 +158,30 @@ const useQuestion = (id: string) => {
     }
   };
 
+  const getAnswers = async () => {
+    try {
+      const response = await answersApi.answers(id);
+      setAnswers(response);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(error.response?.data);
+      }
+    }
+  };
+
   const answerQuestion = useCallback(async () => {
     setIsLoading(true);
-    await answers.create(id, {
+    await answersApi.create(id, {
       content: answer,
     });
-    await getQuestion();
+    await getAnswers();
     setIsLoading(false);
   }, [answer, id]);
 
   return {
     question,
     answer,
+    answers,
     onAnswerChange: setAnswer,
     answerQuestion,
     isLoading,
@@ -154,8 +189,14 @@ const useQuestion = (id: string) => {
 };
 
 export const Question = ({ route: { params } }: QuestionProps) => {
-  const { question, answer, onAnswerChange, answerQuestion, isLoading } =
-    useQuestion(params.id);
+  const {
+    question,
+    answer,
+    answers,
+    onAnswerChange,
+    answerQuestion,
+    isLoading,
+  } = useQuestion(params.id);
 
   const AnswerItem = useCallback(
     ({ item }: ListRenderItemInfo<AnswerDto>) => {
@@ -189,7 +230,7 @@ export const Question = ({ route: { params } }: QuestionProps) => {
         {question.description}
       </Label>
       <FlatList
-        data={question.answers}
+        data={answers}
         renderItem={AnswerItem}
         contentContainerStyle={{ rowGap: 10 }}
         style={{ width: "95%", height: "80%" }}

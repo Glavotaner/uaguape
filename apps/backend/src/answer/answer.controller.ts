@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AnswerService } from './answer.service';
 import { CreateAnswerDto, TokenizedUserDto } from '@uaguape/common';
 import { AnswerRoutes } from '@uaguape/routes';
@@ -21,5 +21,10 @@ export class AnswerController {
   ) {
     // TODO clean this up
     return this.answerService.create(data, questionId, user, userId);
+  }
+
+  @Get(AnswerRoutes.QUESTION_ID)
+  answers(@Param(QUESTION_ID) questionId: string, @GetUserId() userId: string) {
+    return this.answerService.answers(questionId, userId);
   }
 }

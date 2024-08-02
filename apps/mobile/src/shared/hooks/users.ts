@@ -6,7 +6,7 @@ export const useUsers = () => {
 
   return {
     get: () => users.get<UserDto, UserDto>(""),
-    update: (id: string, data: UpdateUserDto) =>
-      users.patch<UserDto, UserDto, UpdateUserDto>(id, data),
+    update: (data: UpdateUserDto) =>
+      users.patch<UserDto, UserDto, UpdateUserDto>("", data),
   };
 };

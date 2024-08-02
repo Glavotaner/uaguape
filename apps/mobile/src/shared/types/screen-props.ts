@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "./root-stack-param-list";
+import { AuthorizedStackParamList } from "./authorized-stack-param.list";
 
-type Screen<T extends keyof RootStackParamList> = NativeStackScreenProps<
-  RootStackParamList,
+type Screen<T extends keyof AuthorizedStackParamList> = NativeStackScreenProps<
+  AuthorizedStackParamList,
   T
 >;
 

@@ -9,41 +9,21 @@ export class QuestionService {
   private readonly questionSelect: {
     short: Prisma.QuestionSelect;
   } = {
-    short: { id: true, title: true, description: true },
+    short: { id: true, description: true },
   };
 
   constructor(prisma: PrismaService) {
     this._question = prisma.question;
   }
 
-  async findOne(id: string, userId: string) {
-    const isAnswerOfUserOrPair = {
-      OR: [{ userId }, { user: { pairId: userId } }],
-    };
-    const question = await this._question.findFirstOrThrow({
+  async findOne(id: string) {
+    return this._question.findFirstOrThrow({
       where: { id },
       select: {
         id: true,
-        title: true,
         description: true,
-        answers: {
-          select: { user: true, content: true },
-          orderBy: { createdAt: 'desc' },
-          where: isAnswerOfUserOrPair,
-        },
       },
     });
-    return {
-      ...question,
-      answers: question.answers.map((answer) => ({
-        ...answer,
-        isMyAnswer: answer.user.id === userId,
-        user: {
-          ...answer.user,
-          picture: answer.user.id === userId ? answer.user.picture : null,
-        },
-      })),
-    };
   }
 
   async findDailyQuestion() {

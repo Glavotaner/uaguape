@@ -27,8 +27,7 @@ model User {
 
 model Question {
   id          String   @id @default(cuid())
-  title       String   @unique
-  description String
+  description String  @unique
   displayedOn DateTime?
   answers      Answer[]
 }

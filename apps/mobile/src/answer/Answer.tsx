@@ -64,7 +64,7 @@ export const Answer = (answer: AnswerDto) => {
   return (
     <View
       style={{
-        flexDirection: "row",
+        flexDirection: answer.isMyAnswer ? "row-reverse" : "row",
         backgroundColor: colors.border,
         columnGap: 10,
         padding: 10,
@@ -74,7 +74,12 @@ export const Answer = (answer: AnswerDto) => {
       }}
     >
       {answer.user.picture && (
-        <Image source={{ uri: answer.user.picture }} width={50} height={50} />
+        <Image
+          source={{ uri: answer.user.picture }}
+          width={30}
+          height={30}
+          style={{ borderRadius: 10 }}
+        />
       )}
 
       <Label style={{ fontSize: text.size.small, flexShrink: 1 }}>

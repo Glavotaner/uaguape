@@ -11,6 +11,10 @@ export class UserService {
     this._user = prismaService.user;
   }
 
+  user(id: string) {
+    return this._user.findUnique({ where: { id } });
+  }
+
   create({ email, name, picture }: TokenizedUserDto) {
     // TODO fix oauth scopes
     const dto = { email, name, picture };
