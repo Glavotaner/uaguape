@@ -1,22 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import config from '../../firebase.config.json';
+import { CreateNotificationDto } from '@uaguape/common';
 
 @Injectable()
 export class NotificationService {
   private readonly messaging: admin.messaging.Messaging;
 
-  constructor() {;
+  constructor() {
     const client = admin.initializeApp({
       credential: admin.credential.cert(config as admin.ServiceAccount),
     });
     this.messaging = client.messaging();
   }
 
-  async create({token, title, body}: {token: string; title: string, body: string}) {
+  async create({ token, notification, data }: CreateNotificationDto) {
     return this.messaging.send({
       token,
-      notification: { body, title },
-    })
+      notification,
+      // TODO improve type
+      data: data as any,
+    });
   }
 }

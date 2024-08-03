@@ -1,3 +1,4 @@
-export * from './src/user/index';
-export * from './src/question/index';
-export * from './src/answer/index';
+export * from "./src/user";
+export * from "./src/question";
+export * from "./src/answer";
+export * from "./src/notification";

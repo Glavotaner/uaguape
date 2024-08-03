@@ -96,11 +96,9 @@ const AuthorizedStack = () => {
   const { receivedMessage } = useMessaging();
 
   useEffect(() => {
-    if (receivedMessage) {
-      ToastAndroid.show(
-        receivedMessage.body ?? receivedMessage.title!,
-        ToastAndroid.SHORT
-      );
+    if (receivedMessage?.notification) {
+      const { title, body } = receivedMessage.notification;
+      ToastAndroid.show(body ?? title!, ToastAndroid.SHORT);
     }
   }, [receivedMessage]);
 

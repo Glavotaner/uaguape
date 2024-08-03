@@ -9,11 +9,12 @@ import {
   useState,
 } from "react";
 import { useUsers } from "../hooks/users";
+import { NotificationDto } from "@uaguape/common";
 
 const messagingClient = messaging();
 
 const MessagingContext = createContext<{
-  receivedMessage?: { title?: string; body?: string } | null;
+  receivedMessage?: NotificationDto | null;
 }>({});
 export const useMessaging = () => useContext(MessagingContext);
 
@@ -21,10 +22,8 @@ export const MessagingProvider = ({ children }: { children: ReactNode }) => {
   const users = useUsers();
   const [hasNotificationPermissions, setHasNotificationPermissions] =
     useState(false);
-  const [receivedMessage, setReceivedMessage] = useState<{
-    title?: string;
-    body?: string;
-  } | null>(null);
+  const [receivedMessage, setReceivedMessage] =
+    useState<NotificationDto | null>(null);
 
   const permission = "android.permission.POST_NOTIFICATIONS" as const;
 
@@ -48,12 +47,10 @@ export const MessagingProvider = ({ children }: { children: ReactNode }) => {
       setHasNotificationPermissions(true);
       const initialNotification =
         await messagingClient.getInitialNotification();
-      if (initialNotification?.notification) {
-        setReceivedMessage({
-          title: initialNotification.notification.title,
-          body: initialNotification.notification.body,
-        });
-      }
+      setReceivedMessage({
+        notification: initialNotification?.notification,
+        data: initialNotification?.data,
+      });
       const pushToken = await getToken();
       updateUser(pushToken);
     }
@@ -73,16 +70,16 @@ export const MessagingProvider = ({ children }: { children: ReactNode }) => {
     if (hasNotificationPermissions) {
       subscribers.push(
         messagingClient.onMessage(async (message) => {
-          if (message.notification) {
-            const { title, body } = message.notification;
-            setReceivedMessage({ title, body });
-          }
+          setReceivedMessage({
+            notification: message?.notification,
+            data: message?.data,
+          });
         }),
         messagingClient.onNotificationOpenedApp(async (message) => {
-          if (message.notification) {
-            const { title, body } = message.notification;
-            setReceivedMessage({ title, body });
-          }
+          setReceivedMessage({
+            notification: message?.notification,
+            data: message?.data,
+          });
         }),
         messagingClient.onTokenRefresh((pushToken) => {
           updateUser(pushToken);
