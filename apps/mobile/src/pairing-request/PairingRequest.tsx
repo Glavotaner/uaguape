@@ -10,7 +10,7 @@ import { usePairs } from "../shared/hooks/pairs";
 export const PairingRequest = ({ route }: PairingRequestProps) => {
   const { pairId } = route.params;
   const [pairName, setPairName] = useState<string | null>(null);
-  const { getPairingCode, ...pairs } = usePairs();
+  const pairs = usePairs();
 
   const { text } = useTheme();
   const { confirmPair } = usePairing();

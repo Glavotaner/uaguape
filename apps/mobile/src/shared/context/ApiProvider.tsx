@@ -39,7 +39,9 @@ export const useApi = () => useContext(ApiContext);
 
 export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const { idToken, hasRefreshToken, onRefreshAuth } = useAuth();
-  const [api, setApi] = useState<ControllerAxiosInstances>({} as any);
+  const [api, setApi] = useState<ControllerAxiosInstances>(
+    {} as ControllerAxiosInstances
+  );
 
   useEffect(() => {
     if (idToken) {

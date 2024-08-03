@@ -27,7 +27,7 @@ export const useStorage: StorageHook = (key: StorageKeys) => {
           accessible: ACCESSIBLE.WHEN_UNLOCKED,
         });
       }
-    } catch (error) {
+    } catch {
       return Promise.resolve(null);
     }
   };

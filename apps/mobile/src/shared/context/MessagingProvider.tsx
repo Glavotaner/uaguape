@@ -1,5 +1,5 @@
 import messaging from "@react-native-firebase/messaging";
-import { PermissionsAndroid, Platform, View } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 import {
   createContext,
   ReactNode,

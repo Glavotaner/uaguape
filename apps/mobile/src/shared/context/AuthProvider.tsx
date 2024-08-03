@@ -7,11 +7,7 @@ import React, {
   useCallback,
 } from "react";
 import * as Auth from "react-native-app-auth";
-import {
-  JWT_SECRET,
-  REACT_APP_BASE_URL,
-  REACT_APP_OAUTH_CLIENT_ID,
-} from "@env";
+import { REACT_APP_BASE_URL, REACT_APP_OAUTH_CLIENT_ID } from "@env";
 import { StorageKeys, useStorage } from "../hooks/storage";
 import axios from "axios";
 import { UserRoutes } from "@uaguape/routes";
