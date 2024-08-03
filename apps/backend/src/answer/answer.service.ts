@@ -15,19 +15,6 @@ export class AnswerService {
   ) {
     this._answer = prisma.answer;
     this._user = prisma.user;
-    this.test();
-  }
-
-  async test() {
-    const { pushToken, email } = await this._user.findFirst({
-      select: { pushToken: true, email: true },
-      where: { email: 'marin.glavas1@gmail.com' },
-    });
-    this.notificationService.create({
-      token: pushToken,
-      title: 'Test',
-      body: 'Test',
-    });
   }
 
   async create(
@@ -45,11 +32,13 @@ export class AnswerService {
       const pairHasAlreadyAnswered = pair.answers.length > 0;
       const message = `${user.name} has answered today's question!`;
       this.notificationService.create({
+        notification: {
+          title: 'Answer',
+          body: pairHasAlreadyAnswered
+            ? message
+            : `${message} Submit your answer to see theirs!`,
+        },
         token: pair.pushToken,
-        title: 'Answer',
-        body: pairHasAlreadyAnswered
-          ? message
-          : `${message} Submit your answer to see theirs!`,
       });
     }
   }

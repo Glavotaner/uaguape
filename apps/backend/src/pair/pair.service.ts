@@ -28,9 +28,11 @@ export class PairService {
 
     if (pair.pushToken) {
       this.notificationService.create({
+        notification: {
+          title: 'Pairing',
+          body: `You have been paired with ${user.name}`,
+        },
         token: pair.pushToken,
-        title: 'Pairing',
-        body: `You have been paired with ${user.name}`,
       });
     }
   }
