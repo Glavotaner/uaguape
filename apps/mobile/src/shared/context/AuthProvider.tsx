@@ -35,7 +35,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState | null>(null);
-  const [getAuth, setAuth] = useStorage(StorageKeys.AUTH_STATE);
+  const [getAuth, setAuth] = useStorage<AuthState>(StorageKeys.AUTH_STATE);
   const [isAuthReady, setIsAuthReady] = useState(false);
 
   const authConfig: Auth.AuthConfiguration = {

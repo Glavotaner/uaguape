@@ -5,30 +5,33 @@ export enum StorageKeys {
   USER = "user",
 }
 
-type StorageHook<T = any> = (
+type StorageHook = <T>(
   key: StorageKeys
-) => [getItem: () => Promise<T | null>, setItem: (item: T) => Promise<T>];
+) => [
+  getItem: () => Promise<T | null>,
+  setItem: (item: T | null) => Promise<void>
+];
 
-export const useStorage: StorageHook = (key: StorageKeys) => {
+export const useStorage: StorageHook = <T>(key: StorageKeys) => {
   const getItem = async () => {
     try {
       const item = await SecureStorage.getItem(key);
-      return item ? JSON.parse(item!) : null;
+      return item ? (JSON.parse(item!) as T) : null;
     } catch {
       return null;
     }
   };
-  const setItem = async (item: unknown) => {
+  const setItem = async (item: T | null) => {
     try {
       if (item == null) {
-        return await SecureStorage.removeItem(key);
+        await SecureStorage.removeItem(key);
       } else {
-        return await SecureStorage.setItem(key, JSON.stringify(item), {
+        await SecureStorage.setItem(key, JSON.stringify(item), {
           accessible: ACCESSIBLE.WHEN_UNLOCKED,
         });
       }
     } catch {
-      return Promise.resolve(null);
+      return Promise.resolve();
     }
   };
   return [getItem, setItem];
