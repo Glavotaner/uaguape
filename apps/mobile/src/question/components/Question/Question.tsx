@@ -1,16 +1,12 @@
 import { AnswerDto } from "@uaguape/common";
 import { useCallback } from "react";
-import {
-  ListRenderItemInfo,
-  View,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
+import { ListRenderItemInfo, View, FlatList } from "react-native";
 import { Label } from "../../../shared/components/label/Label";
 import { QuestionProps } from "../../../shared/types/screen-props";
 import { useQuestion } from "../../hooks/question.hook";
 import { AnswerItem } from "../../../answer/components/AnswerItem/AnswerItem";
 import { AnswerInput } from "../../../answer/components/AnswerInput/AnswerInput";
+import { Loading } from "../../../shared/components/Loading/Loading";
 
 export const Question = ({ route: { params } }: QuestionProps) => {
   const {
@@ -62,6 +58,6 @@ export const Question = ({ route: { params } }: QuestionProps) => {
       </View>
     </View>
   ) : (
-    <ActivityIndicator />
+    <Loading />
   );
 };

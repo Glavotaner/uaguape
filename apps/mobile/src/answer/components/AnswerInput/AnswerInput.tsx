@@ -40,7 +40,7 @@ export const AnswerInput = ({
         onPress={onAnswerSend}
       >
         {isLoading ? (
-          <ActivityIndicator />
+          <ActivityIndicator color={colors.text} />
         ) : (
           <SendIcon width={30} height={30} fill={colors.text} />
         )}

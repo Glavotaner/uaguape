@@ -56,6 +56,7 @@ export const useQuestion = (id: string) => {
     await answersApi.create(id, {
       content: answer,
     });
+    setAnswer("");
     await getAnswers();
     setIsLoading(false);
   }, [answer, id]);
