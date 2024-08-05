@@ -1,5 +1,5 @@
 import { QuestionDto } from "@uaguape/common";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuestions } from "../../shared/hooks/questions";
 import { HomeProps } from "../../shared/types/screen-props";
 
@@ -11,15 +11,22 @@ export const useDailyQuestion = ({ navigation }: HomeProps) => {
     try {
       const question = await questions.daily();
       setDailyQuestion(question);
-      navigation.navigate("Question", { id: question.id });
     } catch (error) {
       console.warn(error);
     }
   };
 
+  const openQuestion = useCallback(
+    () =>
+      navigation.navigate("Question", {
+        id: dailyQuestion!.id,
+      }),
+    [dailyQuestion]
+  );
+
   useEffect(() => {
     fetchDailyQuestion();
   }, []);
 
-  return { dailyQuestion };
+  return { dailyQuestion, openQuestion };
 };

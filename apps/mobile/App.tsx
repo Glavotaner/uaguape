@@ -2,7 +2,6 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Button,
   SafeAreaView,
   StatusBar,
   ToastAndroid,
@@ -18,15 +17,13 @@ import { ThemeProvider, useTheme } from "./src/shared/context/ThemeProvider";
 import { PairingRequest } from "./src/pairing-request/PairingRequest";
 import { Pairing } from "./src/pairing/Pairing";
 import {
-  PairingProvider,
-  usePairing,
-} from "./src/shared/context/PairingProvider";
-import {
   MessagingProvider,
   useMessaging,
 } from "./src/shared/context/MessagingProvider";
 import { AuthorizedStackParamList } from "./src/shared/types/authorized-stack-param.list";
 import { Question } from "./src/question/components/Question/Question";
+import { ProfileImage } from "./src/question/components/ProfileImage/ProfileImage";
+import { HomeProps } from "./src/shared/types/screen-props";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -46,7 +43,28 @@ function App(): React.JSX.Element {
         />
         <AuthProvider>
           <ApiProvider>
-            <NavigationContainer theme={theme}>
+            <NavigationContainer
+              theme={theme}
+              linking={{
+                prefixes: ["uaguape://"],
+                config: {
+                  screens: {
+                    Authorized: {
+                      screens: {
+                        PairingRequest: {
+                          path: "pair/:pairId",
+                          parse: { pairId: String },
+                        },
+                        Question: {
+                          path: "question/:id",
+                          parse: { id: String },
+                        },
+                      },
+                    },
+                  },
+                },
+              }}
+            >
               <Navigation />
             </NavigationContainer>
           </ApiProvider>
@@ -62,11 +80,9 @@ const Navigation = () => {
 
   const Authorized = useCallback(
     () => (
-      <PairingProvider>
-        <MessagingProvider>
-          <AuthorizedStack />
-        </MessagingProvider>
-      </PairingProvider>
+      <MessagingProvider>
+        <AuthorizedStack />
+      </MessagingProvider>
     ),
     []
   );
@@ -93,7 +109,6 @@ const Navigation = () => {
 const AuthorizedStack = () => {
   const Stack = createNativeStackNavigator<AuthorizedStackParamList>();
   const [currentRoute, setCurrentRoute] = useState<string | null>(null);
-  const { hasPair, pairId, cancelPair } = usePairing();
   const { receivedMessage } = useMessaging();
   const navigation = useNavigation();
 
@@ -124,47 +139,50 @@ const AuthorizedStack = () => {
     }
   }, [currentRoute, receivedMessage]);
 
+  const Profile = useCallback(
+    ({ navigation }: HomeProps) => (
+      <ProfileImage onPress={() => navigation.navigate("Pairing")} />
+    ),
+    []
+  );
+
   return (
     <Stack.Navigator>
-      {hasPair ? (
-        <Stack.Screen
-          name="PairingRequest"
-          component={PairingRequest}
-          initialParams={{ pairId: pairId! }}
-          options={{
-            presentation: "modal",
-            title: "Pairing Request",
-            animation: "fade_from_bottom",
-            headerLeft: () => <Button title="Cancel" onPress={cancelPair} />,
-          }}
-        />
-      ) : (
-        <>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ title: "Questions" }}
-          />
-          <Stack.Screen
-            name="Question"
-            component={Question}
-            options={{
-              headerBackVisible: true,
-              animation: "fade_from_bottom",
-              title: "Question",
-            }}
-          />
-          <Stack.Screen
-            name="Pairing"
-            component={Pairing}
-            options={{
-              presentation: "containedModal",
-              title: "Generate Pairing Code",
-              animation: "fade_from_bottom",
-            }}
-          />
-        </>
-      )}
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={(props) => ({
+          title: "Questions",
+          headerRight: () => <Profile {...props} />,
+        })}
+      />
+      <Stack.Screen
+        name="Question"
+        component={Question}
+        options={{
+          headerBackVisible: true,
+          animation: "fade_from_bottom",
+          title: "Question",
+        }}
+      />
+      <Stack.Screen
+        name="Pairing"
+        component={Pairing}
+        options={{
+          presentation: "containedModal",
+          title: "Generate Pairing Code",
+          animation: "fade_from_bottom",
+        }}
+      />
+      <Stack.Screen
+        name="PairingRequest"
+        component={PairingRequest}
+        options={{
+          presentation: "modal",
+          title: "Pairing Request",
+          animation: "fade_from_bottom",
+        }}
+      />
     </Stack.Navigator>
   );
 };
