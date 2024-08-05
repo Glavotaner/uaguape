@@ -1,6 +1,6 @@
 import {
   ActivityIndicator,
-  Button,
+  Pressable,
   ScrollView,
   Share,
   View,
@@ -12,6 +12,7 @@ import { useUsers } from "../shared/hooks/users";
 import { useFont } from "../shared/context/ThemeProvider";
 import { useTheme } from "@react-navigation/native";
 import { UserDto } from "@uaguape/common";
+import GroupIcon from "../assets/icons/group.svg";
 
 export const Profile = () => {
   const { getPairingCode } = usePairs();
@@ -25,9 +26,7 @@ export const Profile = () => {
       const data = await users.get();
       setUser(data);
     };
-    setTimeout(() => {
-      fetchUser();
-    }, 2000);
+    fetchUser();
   }, []);
 
   const generatePairingCode = async () => {
@@ -84,13 +83,24 @@ export const Profile = () => {
           <Label>{user.pair?.name ?? "None"}</Label>
         </Row>
         <Row>
-          <View
+          <Pressable
             style={{
               width: "100%",
+              flexDirection: "row",
+              backgroundColor: colors.border,
+              padding: 10,
+              columnGap: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 10,
             }}
+            onPress={generatePairingCode}
           >
-            <Button title="Generate code" onPress={generatePairingCode} />
-          </View>
+            <Label style={{ fontSize: font.size.large, fontWeight: "500" }}>
+              Generate code
+            </Label>
+            <GroupIcon width={25} height={25} fill={colors.text} />
+          </Pressable>
         </Row>
       </Section>
     </ScrollView>

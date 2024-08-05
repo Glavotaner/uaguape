@@ -1,6 +1,6 @@
 import { View, TextInput, Pressable, ActivityIndicator } from "react-native";
-import { Label } from "../../../shared/components/label/Label";
 import { useTheme } from "@react-navigation/native";
+import SendIcon from "../../../assets/icons/send.svg";
 
 export const AnswerInput = ({
   answer,
@@ -33,18 +33,16 @@ export const AnswerInput = ({
       />
       <Pressable
         style={{
-          borderColor: "black",
-          borderWidth: 1,
-          borderRadius: 10,
-          marginVertical: 10,
           width: "20%",
+          justifyContent: "center",
+          alignItems: "flex-end",
         }}
         onPress={onAnswerSend}
       >
         {isLoading ? (
           <ActivityIndicator />
         ) : (
-          <Label style={{ color: colors.text, padding: 10 }}>Send</Label>
+          <SendIcon width={30} height={30} fill={colors.text} />
         )}
       </Pressable>
     </View>
