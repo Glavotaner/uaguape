@@ -16,7 +16,6 @@ export class UserService {
   }
 
   create({ email, name, picture }: TokenizedUserDto) {
-    // TODO fix oauth scopes
     const dto = { email, name, picture };
     return this._user.upsert({
       create: dto,
