@@ -1,6 +1,6 @@
 import { View, TextInput, Pressable, ActivityIndicator } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import SendIcon from "../../../assets/icons/send.svg";
+import SendIcon from "@icons/send.svg";
 
 export const AnswerInput = ({
   answer,

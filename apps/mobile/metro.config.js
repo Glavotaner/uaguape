@@ -25,6 +25,9 @@ config.resolver = {
   ],
   assetExts: config.resolver.assetExts.filter((ext) => ext !== "svg"),
   sourceExts: [...config.resolver.sourceExts, "svg"],
+  extraNodeModules: {
+    "@icons": require("path").resolve(__dirname, "src/assets/icons"),
+  },
 }
 
 module.exports = config;

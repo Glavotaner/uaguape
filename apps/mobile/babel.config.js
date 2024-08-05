@@ -8,6 +8,14 @@ module.exports = {
         moduleName: "@env",
         path: ".env"
       }
-    ]
+    ],
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "@icons": "./src/assets/icons"
+        }
+      }]
   ]
 };

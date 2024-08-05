@@ -12,7 +12,7 @@ import { useUsers } from "../shared/hooks/users";
 import { useFont } from "../shared/context/ThemeProvider";
 import { useTheme } from "@react-navigation/native";
 import { UserDto } from "@uaguape/common";
-import GroupIcon from "../assets/icons/group.svg";
+import GroupIcon from "@icons/group.svg";
 
 export const Profile = () => {
   const { getPairingCode } = usePairs();
