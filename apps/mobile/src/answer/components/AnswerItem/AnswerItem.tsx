@@ -1,10 +1,12 @@
 import { AnswerDto } from "@uaguape/common";
 import { useWindowDimensions, View, Image } from "react-native";
 import { Label } from "../../../shared/components/label/Label";
-import { useTheme } from "../../../shared/context/ThemeProvider";
+import { useFont } from "../../../shared/context/ThemeProvider";
+import { useTheme } from "@react-navigation/native";
 
 export const AnswerItem = (answer: AnswerDto) => {
-  const { colors, text } = useTheme();
+  const font = useFont();
+  const { colors } = useTheme();
   const { width } = useWindowDimensions();
 
   return (
@@ -29,7 +31,7 @@ export const AnswerItem = (answer: AnswerDto) => {
         />
       )}
 
-      <Label style={{ fontSize: text.size.small, flexShrink: 1 }}>
+      <Label style={{ fontSize: font.size.small, flexShrink: 1 }}>
         {answer.content}
       </Label>
     </View>

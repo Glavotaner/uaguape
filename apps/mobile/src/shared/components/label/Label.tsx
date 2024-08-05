@@ -1,6 +1,6 @@
+import { useTheme } from "@react-navigation/native";
 import { ReactNode } from "react";
 import { TextStyle, Text } from "react-native";
-import { useTheme } from "../../context/ThemeProvider";
 
 export const Label = ({
   children,

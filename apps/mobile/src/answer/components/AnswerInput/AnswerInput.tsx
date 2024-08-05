@@ -1,6 +1,6 @@
 import { View, TextInput, Pressable, ActivityIndicator } from "react-native";
 import { Label } from "../../../shared/components/label/Label";
-import { useTheme } from "../../../shared/context/ThemeProvider";
+import { useTheme } from "@react-navigation/native";
 
 export const AnswerInput = ({
   answer,
