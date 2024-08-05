@@ -1,4 +1,4 @@
-import { DarkTheme, NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
 import { Linking, SafeAreaView, StatusBar, useColorScheme } from "react-native";
 import { ApiProvider } from "./src/shared/context/ApiProvider";
@@ -6,7 +6,8 @@ import { AuthProvider } from "./src/shared/context/AuthProvider";
 import { FontProvider } from "./src/shared/context/ThemeProvider";
 import messaging from "@react-native-firebase/messaging";
 import { Navigation } from "./src/root-navigation/RootNavigation";
-import { LightTheme } from "./src/shared/constants/theme";
+import { LightTheme, DarkTheme } from "./src/shared/constants/theme";
+import { deepLink, DEEP_LINK_SCHEMA } from "@uaguape/linking";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -29,18 +30,18 @@ function App(): React.JSX.Element {
             <NavigationContainer
               theme={theme}
               linking={{
-                prefixes: ["uaguape://"],
+                prefixes: [DEEP_LINK_SCHEMA],
                 config: {
                   screens: {
                     Authorized: {
                       screens: {
                         PairingRequest: {
-                          path: "pair/:pairId",
-                          parse: { pairId: String },
+                          path: deepLink.PairingRequest.path,
+                          parse: deepLink.PairingRequest.parse,
                         },
                         Question: {
-                          path: "question/:id",
-                          parse: { id: String },
+                          path: deepLink.Question.path,
+                          parse: deepLink.Question.parse,
                         },
                       },
                     },

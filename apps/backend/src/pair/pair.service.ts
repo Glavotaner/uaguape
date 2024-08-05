@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@uaguape/db';
 import { Prisma } from '@prisma/client';
 import { NotificationService } from 'src/notification/notification.service';
+import { deepLink } from '@uaguape/linking';
 
 @Injectable()
 export class PairService {
@@ -42,6 +43,6 @@ export class PairService {
   }
 
   generatePairCode(userId: string) {
-    return `uaguape://pair/${userId}`;
+    return deepLink.PairingRequest.link(userId);
   }
 }

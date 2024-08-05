@@ -34,7 +34,8 @@
     "rxjs": "^7.8.1",
     "@uaguape/common": "*",
     "@uaguape/db": "*",
-    "@uaguape/routes": "*"
+    "@uaguape/routes": "*",
+    "@uaguape/linking": "*"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

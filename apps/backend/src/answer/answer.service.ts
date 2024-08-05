@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { NotificationService } from 'src/notification/notification.service';
 import { CreateAnswerDto, TokenizedUserDto } from '@uaguape/common';
 import { PrismaService } from '@uaguape/db';
+import { deepLink } from '@uaguape/linking';
 
 @Injectable()
 export class AnswerService {
@@ -15,22 +16,6 @@ export class AnswerService {
   ) {
     this._answer = prisma.answer;
     this._user = prisma.user;
-    this.test();
-  }
-
-  async test() {
-    const { pushToken } = await this._user.findUnique({
-      where: { email: 'marin.glavas1@gmail.com' },
-      select: { pushToken: true },
-    });
-    this.notificationService.create({
-      notification: {
-        title: 'Test',
-        body: 'Test',
-      },
-      data: { url: 'Home/Questions' },
-      token: pushToken,
-    });
   }
 
   async create(
@@ -54,6 +39,7 @@ export class AnswerService {
             ? message
             : `${message} Submit your answer to see theirs!`,
         },
+        data: { url: deepLink.Question.link(questionId) },
         token: pair.pushToken,
       });
     }
