@@ -2,6 +2,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  Linking,
   SafeAreaView,
   StatusBar,
   ToastAndroid,
@@ -24,6 +25,7 @@ import { AuthorizedStackParamList } from "./src/shared/types/authorized-stack-pa
 import { Question } from "./src/question/components/Question/Question";
 import { ProfileImage } from "./src/question/components/ProfileImage/ProfileImage";
 import { HomeProps } from "./src/shared/types/screen-props";
+import messaging from "@react-native-firebase/messaging";
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === "dark";
@@ -62,6 +64,23 @@ function App(): React.JSX.Element {
                       },
                     },
                   },
+                },
+                subscribe(listener) {
+                  const linkingListener = Linking.addEventListener(
+                    "url",
+                    ({ url }) => listener(url)
+                  );
+                  const messageOpenedAppListener =
+                    messaging().onNotificationOpenedApp((message) => {
+                      if (message.data?.url) {
+                        listener(message.data.url as string);
+                      }
+                    });
+
+                  return () => {
+                    linkingListener.remove();
+                    messageOpenedAppListener();
+                  };
                 },
               }}
             >
