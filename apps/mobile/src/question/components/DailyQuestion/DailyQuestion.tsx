@@ -11,7 +11,7 @@ export const DailyQuestion = ({
   return (
     <Pressable
       style={{
-        backgroundColor: colors.background,
+        backgroundColor: colors.border,
         borderRadius: 5,
         rowGap: 10,
         padding: 10,

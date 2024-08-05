@@ -18,7 +18,7 @@ export const AnswerInput = ({
     <View
       style={{
         borderRadius: 10,
-        backgroundColor: "white",
+        backgroundColor: colors.border,
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: 10,
