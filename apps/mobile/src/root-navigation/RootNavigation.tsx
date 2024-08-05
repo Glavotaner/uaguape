@@ -23,7 +23,11 @@ export const Navigation = () => {
   return (
     <Stack.Navigator>
       {!isAuthReady ? (
-        <Stack.Screen name="Splash" component={SplashScreen} />
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
       ) : !hasAuth ? (
         <Stack.Screen name="AuthError" component={AuthError} />
       ) : (

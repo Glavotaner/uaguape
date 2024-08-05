@@ -12,7 +12,7 @@ export class UserService {
   }
 
   user(id: string) {
-    return this._user.findUnique({ where: { id } });
+    return this._user.findUnique({ where: { id }, include: { pair: true } });
   }
 
   create({ email, name, picture }: TokenizedUserDto) {

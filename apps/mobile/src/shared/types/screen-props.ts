@@ -9,4 +9,3 @@ type Screen<T extends keyof AuthorizedStackParamList> = NativeStackScreenProps<
 export type QuestionProps = Screen<"Question">;
 export type HomeProps = Screen<"Home">;
 export type PairingRequestProps = Screen<"PairingRequest">;
-export type PairingProps = Screen<"Pairing">;

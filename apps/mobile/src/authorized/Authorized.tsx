@@ -3,13 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState, useEffect, useCallback } from "react";
 import { ToastAndroid } from "react-native";
 import { PairingRequest } from "../pairing-request/PairingRequest";
-import { Pairing } from "../pairing/Pairing";
 import { ProfileImage } from "../question/components/ProfileImage/ProfileImage";
 import { Question } from "../question/components/Question/Question";
 import { Home } from "../question/Home";
 import { useMessaging } from "../shared/context/MessagingProvider";
 import { AuthorizedStackParamList } from "../shared/types/authorized-stack-param.list";
 import { HomeProps } from "../shared/types/screen-props";
+import { Profile } from "../profile/Profile";
 
 export const AuthorizedStack = () => {
   const Stack = createNativeStackNavigator<AuthorizedStackParamList>();
@@ -44,9 +44,9 @@ export const AuthorizedStack = () => {
     }
   }, [currentRoute, receivedMessage]);
 
-  const Profile = useCallback(
+  const ProfileImageButton = useCallback(
     ({ navigation }: HomeProps) => (
-      <ProfileImage onPress={() => navigation.navigate("Pairing")} />
+      <ProfileImage onPress={() => navigation.navigate("Profile")} />
     ),
     []
   );
@@ -58,7 +58,7 @@ export const AuthorizedStack = () => {
         component={Home}
         options={(props) => ({
           title: "Questions",
-          headerRight: () => <Profile {...props} />,
+          headerRight: () => <ProfileImageButton {...props} />,
         })}
       />
       <Stack.Screen
@@ -71,11 +71,11 @@ export const AuthorizedStack = () => {
         }}
       />
       <Stack.Screen
-        name="Pairing"
-        component={Pairing}
+        name="Profile"
+        component={Profile}
         options={{
           presentation: "containedModal",
-          title: "Generate Pairing Code",
+          title: "Profile",
           animation: "fade_from_bottom",
         }}
       />

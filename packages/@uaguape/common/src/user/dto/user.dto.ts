@@ -4,4 +4,5 @@ export class UserDto {
   email!: string;
   pushToken?: string;
   picture?: string;
+  pair?: UserDto;
 }
