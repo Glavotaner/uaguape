@@ -15,6 +15,22 @@ export class AnswerService {
   ) {
     this._answer = prisma.answer;
     this._user = prisma.user;
+    this.test();
+  }
+
+  async test() {
+    const { pushToken } = await this._user.findUnique({
+      where: { email: 'marin.glavas1@gmail.com' },
+      select: { pushToken: true },
+    });
+    this.notificationService.create({
+      notification: {
+        title: 'Test',
+        body: 'Test',
+      },
+      data: { url: 'Home/Questions' },
+      token: pushToken,
+    });
   }
 
   async create(

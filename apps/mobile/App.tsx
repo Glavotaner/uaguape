@@ -1,6 +1,6 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   SafeAreaView,
@@ -92,15 +92,37 @@ const Navigation = () => {
 
 const AuthorizedStack = () => {
   const Stack = createNativeStackNavigator<AuthorizedStackParamList>();
+  const [currentRoute, setCurrentRoute] = useState<string | null>(null);
   const { hasPair, pairId, cancelPair } = usePairing();
   const { receivedMessage } = useMessaging();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if (receivedMessage?.notification) {
-      const { title, body } = receivedMessage.notification;
-      ToastAndroid.show(body ?? title!, ToastAndroid.SHORT);
-    }
+    return navigation.addListener("state", (r) => {
+      const [authorizedScreen] = r.data.state.routes;
+      const routes = authorizedScreen.state?.routes;
+      if (routes) {
+        const currentRoute = routes[routes.length - 1].name;
+        setCurrentRoute(currentRoute);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (receivedMessage) handleNotification();
   }, [receivedMessage]);
+
+  const handleNotification = useCallback(() => {
+    const hasNotification = receivedMessage!.notification;
+
+    if (hasNotification) {
+      const { title, body } = receivedMessage!.notification!;
+      const url = receivedMessage!.data?.url;
+      if (!url || !url.endsWith(currentRoute!)) {
+        ToastAndroid.show(body ?? title!, ToastAndroid.SHORT);
+      }
+    }
+  }, [currentRoute, receivedMessage]);
 
   return (
     <Stack.Navigator>
