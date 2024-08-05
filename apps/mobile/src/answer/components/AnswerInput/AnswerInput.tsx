@@ -28,7 +28,7 @@ export const AnswerInput = ({
         value={answer}
         placeholder="Answer..."
         onChangeText={onAnswerChange}
-        style={{ color: colors.text }}
+        style={{ color: colors.text, width: "80%" }}
         placeholderTextColor={colors.text}
       />
       <Pressable
@@ -37,6 +37,7 @@ export const AnswerInput = ({
           borderWidth: 1,
           borderRadius: 10,
           marginVertical: 10,
+          width: "20%",
         }}
         onPress={onAnswerSend}
       >
