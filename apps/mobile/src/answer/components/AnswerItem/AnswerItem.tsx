@@ -20,6 +20,7 @@ export const AnswerItem = (answer: AnswerDto) => {
         borderRadius: 10,
         maxWidth: width * 0.95,
         alignItems: "center",
+        elevation: 5,
       }}
     >
       {answer.user.picture && (

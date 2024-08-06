@@ -28,11 +28,14 @@ type ControllerAxiosInstances = {
   [K in ControllerNames]: AxiosInstance;
 };
 
-const ApiContext = createContext<ControllerAxiosInstances>({
-  users: axios.create(),
-  answers: axios.create(),
-  pairs: axios.create(),
-  questions: axios.create(),
+type ApiContextType = {
+  controllers: ControllerAxiosInstances;
+  isReady: boolean;
+};
+
+const ApiContext = createContext<ApiContextType>({
+  controllers: {} as ControllerAxiosInstances,
+  isReady: false,
 });
 
 export const useApi = () => useContext(ApiContext);
@@ -42,6 +45,7 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
   const [api, setApi] = useState<ControllerAxiosInstances>(
     {} as ControllerAxiosInstances
   );
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (idToken) {
@@ -74,7 +78,14 @@ export const ApiProvider = ({ children }: { children: ReactNode }) => {
       }, {} as ControllerAxiosInstances);
       setApi(newApi);
     }
+    if (!isReady) {
+      setIsReady(true);
+    }
   }, [idToken, hasRefreshToken, onRefreshAuth]);
 
-  return <ApiContext.Provider value={api}>{children}</ApiContext.Provider>;
+  return (
+    <ApiContext.Provider value={{ controllers: api, isReady }}>
+      {children}
+    </ApiContext.Provider>
+  );
 };

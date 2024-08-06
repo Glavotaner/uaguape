@@ -3,7 +3,9 @@ import { useApi } from "../context/ApiProvider";
 import { QuestionDto } from "@uaguape/common";
 
 export const useQuestions = () => {
-  const { questions } = useApi();
+  const {
+    controllers: { questions },
+  } = useApi();
 
   return {
     get: (id: string) => questions.get<QuestionDto, QuestionDto>(id),

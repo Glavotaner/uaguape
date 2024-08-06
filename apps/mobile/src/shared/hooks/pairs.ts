@@ -3,7 +3,9 @@ import { useApi } from "../context/ApiProvider";
 import { PairRoutes } from "@uaguape/routes";
 
 export const usePairs = () => {
-  const { pairs } = useApi();
+  const {
+    controllers: { pairs },
+  } = useApi();
 
   return {
     get: (pairId: string) => pairs.get<UserDto, UserDto>(pairId),

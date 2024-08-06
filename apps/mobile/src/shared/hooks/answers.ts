@@ -3,7 +3,9 @@ import { useApi } from "../context/ApiProvider";
 import { AnswerRoutes } from "@uaguape/routes";
 
 export const useAnswers = () => {
-  const { answers } = useApi();
+  const {
+    controllers: { answers },
+  } = useApi();
 
   const questionIdUrl = (questionId: string) =>
     AnswerRoutes.QUESTION_ID.replace(":id", questionId);

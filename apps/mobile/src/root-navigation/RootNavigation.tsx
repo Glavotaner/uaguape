@@ -6,10 +6,12 @@ import { useAuth } from "../shared/context/AuthProvider";
 import { MessagingProvider } from "../shared/context/MessagingProvider";
 import { RootStackParamList } from "../shared/types/root-stack-param-list";
 import { SplashScreen } from "../splash/Splash";
+import { useApi } from "../shared/context/ApiProvider";
 
 export const Navigation = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   const { hasAuth, isAuthReady } = useAuth();
+  const { isReady: isApiReady } = useApi();
 
   const Authorized = useCallback(
     () => (
@@ -22,7 +24,7 @@ export const Navigation = () => {
 
   return (
     <Stack.Navigator>
-      {!isAuthReady ? (
+      {!isAuthReady || !isApiReady ? (
         <Stack.Screen
           name="Splash"
           component={SplashScreen}
