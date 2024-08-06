@@ -22,6 +22,7 @@ export const AnswerInput = ({
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: 10,
+        elevation: 5,
       }}
     >
       <TextInput
