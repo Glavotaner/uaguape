@@ -1,12 +1,12 @@
 import { useTheme } from "@react-navigation/native";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, DimensionValue } from "react-native";
 
-export const Loading = () => {
+export const Loading = ({ height = "100%" }: { height?: DimensionValue }) => {
   const { colors } = useTheme();
 
   return (
     <ActivityIndicator
-      style={{ height: "100%" }}
+      style={{ height: height ?? null }}
       size={"large"}
       color={colors.border}
     />

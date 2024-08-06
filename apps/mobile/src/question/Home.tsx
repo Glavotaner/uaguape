@@ -1,8 +1,9 @@
 import React from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View } from "react-native";
 import { HomeProps } from "../shared/types/screen-props";
 import { useDailyQuestion } from "./hooks/daily-question.hook";
 import { DailyQuestion } from "./components/DailyQuestion/DailyQuestion";
+import { Loading } from "../shared/components/Loading/Loading";
 
 export const Home = ({ navigation, ...props }: HomeProps) => {
   const { dailyQuestion, openQuestion } = useDailyQuestion({
@@ -22,7 +23,7 @@ export const Home = ({ navigation, ...props }: HomeProps) => {
       {dailyQuestion ? (
         <DailyQuestion {...dailyQuestion} onPress={openQuestion} />
       ) : (
-        <ActivityIndicator />
+        <Loading />
       )}
     </View>
   );

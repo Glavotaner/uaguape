@@ -1,10 +1,4 @@
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  Share,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, Share, View } from "react-native";
 import { Label } from "../shared/components/label/Label";
 import { ReactNode, useEffect, useState } from "react";
 import { usePairs } from "../shared/hooks/pairs";
@@ -13,6 +7,7 @@ import { useFont } from "../shared/context/ThemeProvider";
 import { useTheme } from "@react-navigation/native";
 import { UserDto } from "@uaguape/common";
 import GroupIcon from "@icons/group.svg";
+import { Loading } from "../shared/components/Loading/Loading";
 
 export const Profile = () => {
   const { getPairingCode } = usePairs();
@@ -83,32 +78,31 @@ export const Profile = () => {
           <Label>{user.pair?.name ?? "None"}</Label>
         </Row>
         <Row>
-          <Pressable
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              backgroundColor: colors.border,
-              padding: 10,
-              columnGap: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 10,
-            }}
-            onPress={generatePairingCode}
-          >
-            <Label style={{ fontSize: font.size.large, fontWeight: "500" }}>
-              Generate code
-            </Label>
-            <GroupIcon width={25} height={25} fill={colors.text} />
-          </Pressable>
+          <View style={{ padding: 10, width: "100%" }}>
+            <Pressable
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                backgroundColor: colors.border,
+                padding: 10,
+                columnGap: 10,
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 10,
+                elevation: 5,
+              }}
+              onPress={generatePairingCode}
+            >
+              <Label style={{ fontSize: font.size.medium, fontWeight: "500" }}>
+                Generate code
+              </Label>
+              <GroupIcon width={20} height={20} fill={colors.text} />
+            </Pressable>
+          </View>
         </Row>
       </Section>
     </ScrollView>
   ) : (
-    <ActivityIndicator
-      style={{ height: "100%" }}
-      size={"large"}
-      color={colors.text}
-    />
+    <Loading />
   );
 };
