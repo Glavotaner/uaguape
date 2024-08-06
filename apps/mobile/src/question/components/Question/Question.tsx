@@ -38,12 +38,13 @@ export const Question = ({ route: { params } }: QuestionProps) => {
         data={answers}
         renderItem={Answer}
         contentContainerStyle={{ rowGap: 10, padding: 10 }}
-        style={{ width: "95%", height: "80%" }}
+        style={{ width: "95%", height: "85%" }}
         inverted
       ></FlatList>
       <View
         style={{
           padding: 10,
+          paddingTop: 0,
           marginBottom: 20,
           width: "100%",
         }}
