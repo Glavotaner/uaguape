@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Pressable, Image } from "react-native";
 import { useUsers } from "../../../shared/hooks/users";
+import { useStyle } from "./ProfileImage.styles";
 
 export const ProfileImage = ({ onPress }: { onPress: () => void }) => {
   const [image, setImage] = useState<string | null>(null);
   const users = useUsers();
+  const styling = useStyle();
+
   useEffect(() => {
     const fetchProfileImage = async () => {
       const user = await users.get();
@@ -19,9 +22,9 @@ export const ProfileImage = ({ onPress }: { onPress: () => void }) => {
     <Pressable onPress={onPress}>
       <Image
         source={{ uri: image }}
-        width={40}
-        height={40}
-        style={{ borderRadius: 20 }}
+        width={styling.image.width}
+        height={styling.image.height}
+        style={{ borderRadius: styling.image.borderRadius }}
       />
     </Pressable>
   ) : null;

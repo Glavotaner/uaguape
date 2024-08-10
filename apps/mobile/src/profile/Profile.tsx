@@ -3,17 +3,17 @@ import { Label } from "../shared/components/label/Label";
 import { ReactNode, useEffect, useState } from "react";
 import { usePairs } from "../shared/hooks/pairs";
 import { useUsers } from "../shared/hooks/users";
-import { useFont } from "../shared/context/ThemeProvider";
 import { useTheme } from "@react-navigation/native";
 import { UserDto } from "@uaguape/common";
 import GroupIcon from "@icons/group.svg";
 import { Loading } from "../shared/components/Loading/Loading";
+import { useStyle } from "./Profile.styles";
 
 export const Profile = () => {
   const { getPairingCode } = usePairs();
   const users = useUsers();
   const [user, setUser] = useState<UserDto | null>(null);
-  const font = useFont();
+  const styling = useStyle();
   const { colors } = useTheme();
 
   useEffect(() => {
@@ -42,25 +42,34 @@ export const Profile = () => {
     children: ReactNode;
   }) => {
     return (
-      <View style={{ rowGap: 10 }}>
-        <Label style={{ fontWeight: "bold", fontSize: font.size.large }}>
-          {title}
-        </Label>
+      <View style={styling.section}>
+        <Label style={styling.sectionTitle}>{title}</Label>
         {children}
       </View>
     );
   };
 
   const Row = ({ children }: { children: ReactNode }) => {
-    return (
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        {children}
-      </View>
-    );
+    return <View style={styling.row}>{children}</View>;
   };
 
+  const GeneratePairingCode = () => (
+    <View style={styling.generatePairContainer}>
+      <Pressable
+        style={styling.generatePairButton}
+        onPress={generatePairingCode}
+      >
+        <Label style={styling.generatePairText}>Generate code</Label>
+        <GroupIcon {...styling.generatePairIcon} fill={colors.text} />
+      </Pressable>
+    </View>
+  );
+
   return user ? (
-    <ScrollView style={{ padding: 20 }} contentContainerStyle={{ rowGap: 25 }}>
+    <ScrollView
+      style={styling.scrollView}
+      contentContainerStyle={styling.contentContainer}
+    >
       <Section title="My info">
         <Row>
           <Label>Name</Label>
@@ -71,34 +80,14 @@ export const Profile = () => {
           <Label>{user.email}</Label>
         </Row>
       </Section>
-      <View style={{ borderBottomWidth: 1 }}></View>
+      <View style={styling.divider}></View>
       <Section title="Pair">
         <Row>
           <Label>Name</Label>
           <Label>{user.pair?.name ?? "None"}</Label>
         </Row>
         <Row>
-          <View style={{ padding: 10, width: "100%" }}>
-            <Pressable
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                backgroundColor: colors.border,
-                padding: 10,
-                columnGap: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 10,
-                elevation: 5,
-              }}
-              onPress={generatePairingCode}
-            >
-              <Label style={{ fontSize: font.size.medium, fontWeight: "500" }}>
-                Generate code
-              </Label>
-              <GroupIcon width={20} height={20} fill={colors.text} />
-            </Pressable>
-          </View>
+          <GeneratePairingCode />
         </Row>
       </Section>
     </ScrollView>

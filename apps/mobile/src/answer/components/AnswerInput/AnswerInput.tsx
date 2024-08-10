@@ -1,6 +1,8 @@
 import { View, TextInput, Pressable, ActivityIndicator } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import SendIcon from "@icons/send.svg";
+import { useStyle } from "./AnswerInput.styles";
+import { useCallback } from "react";
 
 export const AnswerInput = ({
   answer,
@@ -14,38 +16,31 @@ export const AnswerInput = ({
   isLoading: boolean;
 }) => {
   const { colors } = useTheme();
+  const styles = useStyle();
+
+  const SendButton = useCallback(
+    () => (
+      <Pressable style={styles.sendButton} onPress={onAnswerSend}>
+        {isLoading ? (
+          <ActivityIndicator color={colors.text} />
+        ) : (
+          <SendIcon {...styles.sendIcon} fill={colors.text} />
+        )}
+      </Pressable>
+    ),
+    [onAnswerSend, isLoading]
+  );
+
   return (
-    <View
-      style={{
-        borderRadius: 10,
-        backgroundColor: colors.border,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 10,
-        elevation: 5,
-      }}
-    >
+    <View style={styles.container}>
       <TextInput
         value={answer}
         placeholder="Answer..."
         onChangeText={onAnswerChange}
-        style={{ color: colors.text, width: "80%" }}
+        style={styles.input}
         placeholderTextColor={colors.text}
       />
-      <Pressable
-        style={{
-          width: "20%",
-          justifyContent: "center",
-          alignItems: "flex-end",
-        }}
-        onPress={onAnswerSend}
-      >
-        {isLoading ? (
-          <ActivityIndicator color={colors.text} />
-        ) : (
-          <SendIcon width={30} height={30} fill={colors.text} />
-        )}
-      </Pressable>
+      <SendButton />
     </View>
   );
 };

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@icons/*": ["./src/assets/icons/*"],
+      "@styling": ["./src/shared/constants/styling"],
     }
   }
 }

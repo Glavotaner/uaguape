@@ -7,6 +7,7 @@ import { useQuestion } from "../../hooks/question.hook";
 import { AnswerItem } from "../../../answer/components/AnswerItem/AnswerItem";
 import { AnswerInput } from "../../../answer/components/AnswerInput/AnswerInput";
 import { Loading } from "../../../shared/components/Loading/Loading";
+import { useStyle } from "./Question.styles";
 
 export const Question = ({ route: { params } }: QuestionProps) => {
   const {
@@ -23,32 +24,19 @@ export const Question = ({ route: { params } }: QuestionProps) => {
     []
   );
 
+  const styles = useStyle();
+
   return question ? (
-    <View
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        rowGap: 10,
-      }}
-    >
-      <Label style={{ fontWeight: "bold", fontSize: 18 }}>
-        {question.description}
-      </Label>
+    <View style={styles.container}>
+      <Label style={styles.description}>{question.description}</Label>
       <FlatList
         data={answers}
         renderItem={Answer}
-        contentContainerStyle={{ rowGap: 10, padding: 10 }}
-        style={{ width: "95%", height: "85%" }}
+        contentContainerStyle={styles.answers}
+        style={styles.answersList}
         inverted
       ></FlatList>
-      <View
-        style={{
-          padding: 10,
-          paddingTop: 0,
-          marginBottom: 20,
-          width: "100%",
-        }}
-      >
+      <View style={styles.answerInput}>
         <AnswerInput
           onAnswerChange={onAnswerChange}
           answer={answer}

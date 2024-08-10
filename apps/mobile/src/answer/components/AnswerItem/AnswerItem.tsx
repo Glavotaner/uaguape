@@ -1,40 +1,22 @@
 import { AnswerDto } from "@uaguape/common";
-import { useWindowDimensions, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import { Label } from "../../../shared/components/label/Label";
-import { useFont } from "../../../shared/context/ThemeProvider";
-import { useTheme } from "@react-navigation/native";
+import { useAnswerItemStyles } from "./AnswerItem.styles";
 
 export const AnswerItem = (answer: AnswerDto) => {
-  const font = useFont();
-  const { colors } = useTheme();
-  const { width } = useWindowDimensions();
+  const styles = useAnswerItemStyles(answer);
 
   return (
-    <View
-      style={{
-        flexDirection: answer.isMyAnswer ? "row-reverse" : "row",
-        alignSelf: answer.isMyAnswer ? "flex-end" : "flex-start",
-        backgroundColor: colors.border,
-        columnGap: 10,
-        padding: 10,
-        borderRadius: 10,
-        maxWidth: width * 0.95,
-        alignItems: "center",
-        elevation: 5,
-      }}
-    >
+    <View style={styles.container}>
       {answer.user.picture && (
         <Image
           source={{ uri: answer.user.picture }}
-          width={30}
-          height={30}
-          style={{ borderRadius: 10 }}
+          {...styles.imageSize}
+          style={styles.imageStyle}
         />
       )}
 
-      <Label style={{ fontSize: font.size.small, flexShrink: 1 }}>
-        {answer.content}
-      </Label>
+      <Label style={styles.label}>{answer.content}</Label>
     </View>
   );
 };
