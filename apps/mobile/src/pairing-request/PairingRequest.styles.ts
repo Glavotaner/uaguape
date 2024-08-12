@@ -1,4 +1,4 @@
-import { Font } from "@styling";
+import { Flex, Font } from "@styling";
 import { StyleSheet } from "react-native";
 
 export const useStyle = () => {
@@ -6,7 +6,7 @@ export const useStyle = () => {
     container: {
       padding: 30,
       justifyContent: "center",
-      rowGap: 20,
+      rowGap: Flex.rowGap.large,
       height: "100%",
     },
     label: {

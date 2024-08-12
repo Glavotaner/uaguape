@@ -9,4 +9,9 @@ export const Font = {
     semiBold: "600",
     bold: "700",
   },
+  lineHeight: {
+    small: 12,
+    medium: 16,
+    large: 20,
+  },
 } as const;

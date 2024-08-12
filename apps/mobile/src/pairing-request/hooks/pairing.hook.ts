@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { ToastAndroid } from "react-native";
-import { usePairs } from "../../shared/hooks/pairs";
+import { usePairs } from "@api";
 import { PairRoutes } from "@uaguape/routes";
 
 export const usePairing = (pairId: string) => {

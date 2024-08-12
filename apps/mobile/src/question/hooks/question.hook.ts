@@ -2,8 +2,7 @@ import { QuestionDto, AnswerDto } from "@uaguape/common";
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { useMessaging } from "../../shared/context/MessagingProvider";
-import { useAnswers } from "../../shared/hooks/answers";
-import { useQuestions } from "../../shared/hooks/questions";
+import { useAnswers, useQuestions } from "@api";
 
 export const useQuestion = (id: string) => {
   const [answer, setAnswer] = useState<string>("");

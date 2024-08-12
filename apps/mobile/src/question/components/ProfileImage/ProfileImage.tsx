@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Pressable, Image } from "react-native";
-import { useUsers } from "../../../shared/hooks/users";
+import { useUsers } from "@api";
 import { useStyle } from "./ProfileImage.styles";
 
 export const ProfileImage = ({ onPress }: { onPress: () => void }) => {

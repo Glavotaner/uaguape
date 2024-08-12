@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint . --fix",
-    "start": "react-native start",
+    "start": "react-native start --reset-cache",
     "test": "jest",
     "build-apk": "rm -rf android/app/src/main/assets && mkdir android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android && ./gradlew assembleDebug"
   },

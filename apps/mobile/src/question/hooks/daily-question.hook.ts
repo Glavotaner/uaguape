@@ -1,6 +1,6 @@
 import { QuestionDto } from "@uaguape/common";
 import { useCallback, useEffect, useState } from "react";
-import { useQuestions } from "../../shared/hooks/questions";
+import { useQuestions } from "@api";
 import { HomeProps } from "../../shared/types/screen-props";
 
 export const useDailyQuestion = ({ navigation }: HomeProps) => {

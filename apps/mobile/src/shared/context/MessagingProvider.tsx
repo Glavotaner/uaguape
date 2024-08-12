@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useUsers } from "../hooks/users";
+import { useUsers } from "@api";
 import { NotificationDto } from "@uaguape/common";
 
 const messagingClient = messaging();

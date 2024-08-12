@@ -14,7 +14,10 @@ module.exports = {
       {
         "root": ["./src"],
         "alias": {
-          "@icons": "./src/assets/icons"
+          "@icons": "./src/assets/icons",
+          "@styling": "./src/shared/constants/styling",
+          "@components/*": "./src/shared/components/*",
+          "@api": "./src/shared/api"
         }
       }]
   ]

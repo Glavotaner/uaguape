@@ -1,8 +1,7 @@
 import { Pressable, ScrollView, Share, View } from "react-native";
 import { Label } from "../shared/components/label/Label";
 import { ReactNode, useEffect, useState } from "react";
-import { usePairs } from "../shared/hooks/pairs";
-import { useUsers } from "../shared/hooks/users";
+import { usePairs, useUsers } from "@api";
 import { useTheme } from "@react-navigation/native";
 import { UserDto } from "@uaguape/common";
 import GroupIcon from "@icons/group.svg";

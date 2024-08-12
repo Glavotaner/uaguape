@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import { Font } from "@styling";
+import { Flex, Font } from "@styling";
 
 export const useStyle = () => {
   const { colors } = useTheme();
@@ -9,7 +9,7 @@ export const useStyle = () => {
     container: {
       backgroundColor: colors.border,
       borderRadius: 5,
-      rowGap: 10,
+      rowGap: Flex.rowGap.medium,
       padding: 10,
       elevation: 5,
       width: "90%",
