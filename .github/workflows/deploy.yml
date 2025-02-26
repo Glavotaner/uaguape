@@ -1,0 +1,36 @@
+name: Deploy Backend to Raspberry Pi
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.2.0
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build NestJS app image
+        run: docker build -t uaguape ./apps/backend/
+
+      - name: Deploy to Raspberry Pi with Docker Compose
+        uses: appleboy/ghaction-ssh@master
+        with:
+          # ... your SSH secrets and configuration ...
+          script: |
+            ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
+              cd /path/to/your/monorepo/on/rpi &&
+              git pull origin main &&
+              docker-compose down &&
+              docker-compose up -d --build
+            "
