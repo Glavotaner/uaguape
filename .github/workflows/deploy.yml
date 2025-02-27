@@ -24,7 +24,7 @@ jobs:
         run: docker build -t uaguape ./apps/backend/
 
       - name: Deploy to Raspberry Pi with Docker Compose
-        uses: appleboy/ghaction-ssh@master
+        uses: appleboy/ssh-action@v1.2.1
         with:
           # ... your SSH secrets and configuration ...
           script: |
