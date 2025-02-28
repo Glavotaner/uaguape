@@ -6,16 +6,16 @@ RUN apk add --no-cache openssl3
 RUN yarn global add @nestjs/cli
 
 WORKDIR /app
-RUN ls -la
+
 # Copy the monorepo root package.json and yarn.lock
-COPY ../package*.json ./
-COPY ../yarn.lock ./
+COPY package*.json ./
+COPY yarn.lock ./
 
 # Install monorepo dependencies (including backend dependencies)
 RUN yarn install --frozen-lockfile
 
 # Copy dependencies
-COPY ../node_modules ./node_modules
+COPY node_modules ./node_modules
 
 # Build the monorepo packages
 RUN yarn workspace @uaguape/common build
@@ -23,11 +23,11 @@ RUN yarn workspace @uaguape/db build
 RUN yarn workspace @uaguape/linking build
 
 # Copy the backend app's package.json and source code
-COPY ../apps/backend/package*.json ./
-COPY ../apps/backend/tsconfig.json ./
-COPY ../apps/backend/src/ ./src/
-COPY ../apps/backend/firebase.config.json ./
-COPY ../packages/ ./packages/
+COPY apps/backend/package*.json ./
+COPY apps/backend/tsconfig.json ./
+COPY apps/backend/src/ ./src/
+COPY apps/backend/firebase.config.json ./
+COPY packages/ ./packages/
 
 # Build the backend app
 RUN yarn build

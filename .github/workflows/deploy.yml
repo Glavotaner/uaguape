@@ -24,7 +24,7 @@ jobs:
         run: yarn install
 
       - name: Build NestJS app image
-        run: docker build -t uaguape ./apps/backend/
+        run: docker compose build backend
 
       - name: Deploy to Raspberry Pi with Docker Compose
         uses: appleboy/ssh-action@v1.2.1
