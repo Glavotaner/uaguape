@@ -16,6 +16,9 @@ jobs:
         uses: actions/setup-node@v4.2.0
         with:
           node-version: lts/*
+      
+      - name: List files in the root directory
+        run: ls -la
 
       - name: Install dependencies
         run: yarn install
