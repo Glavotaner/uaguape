@@ -11,9 +11,6 @@ WORKDIR /app
 COPY package*.json ./
 COPY yarn.lock ./
 
-# Copy the monorepo packages
-COPY ../../packages ./packages
-
 # Install monorepo dependencies (including backend dependencies)
 RUN yarn install --frozen-lockfile
 
@@ -24,8 +21,6 @@ COPY node_modules ./node_modules
 RUN yarn workspace @uaguape/common build
 RUN yarn workspace @uaguape/db build
 RUN yarn workspace @uaguape/linking build
-
-RUN ls -la
 
 # Copy the backend app's package.json and source code
 COPY apps/backend/package*.json ./
