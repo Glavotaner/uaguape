@@ -1,38 +1,28 @@
-version: "3.9"  # Or your preferred version
-
 services:
-  nest-app:
+  backend:
+    container_name: backend
     image: uaguape  # Your NestJS app image
     ports:
       - "3000:3000"
     depends_on:
       - postgres  # Ensure Postgres starts first
     build:
-      context: ./apps/backend  # Set the build context to the backend app directory
-      dockerfile: Dockerfile  # Specify the Dockerfile name (if different)
+      context: .  # Set the build context to the backend app directory
+      dockerfile: apps/backend/Dockerfile  # Specify the Dockerfile name (if different)
     restart: always
-    secrets:
-      - db_user
-      - db_password
-      - db_name
-    command: >
-      sh -c '
-        DATABASE_URL=postgres://$$(cat /run/secrets/db_user):$$(cat /run/secrets/db_password)@postgres:5432/$$(cat /run/secrets/db_name);
-      '
+    environment:
+      - NODE_ENV=production
+      - PORT=3000    
 
   postgres:
     image: postgres:15-alpine # Or a suitable Postgres image for ARM
+    container_name: database
     restart: always
     ports:
       - "5432:5432" # Only needed if you want to access Postgres externally (not recommended)
-    secrets:
-      - db_user
-      - db_password
-      - db_name
     environment:
-      POSTGRES_USER: /run/secrets/db_user
-      POSTGRES_PASSWORD: /run/secrets/db_password
-      POSTGRES_DB: /run/secrets/db_name
+      POSTGRES_PASSWORD: glavotaner
+      POSTGRES_DB: uaguape
     volumes:
       - postgres_data:/var/lib/postgresql/data # Persist data across container restarts
 
