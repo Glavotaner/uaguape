@@ -12,28 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4.2.0
-        with:
-          node-version: lts/*
-      
-      - name: List files in the root directory
-        run: ls -la
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Build NestJS app image
-        run: docker compose build backend
-
       - name: Deploy to Raspberry Pi with Docker Compose
         uses: appleboy/ssh-action@v1.2.1
         with:
           # ... your SSH secrets and configuration ...
           script: |
             ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
-              cd app/uaguape &&
+              cd uaguape &&
               git pull origin main &&
-              docker-compose down &&
-              docker-compose up -d --build
+              docker compose down &&
+              docker compose up -d --build
             "
