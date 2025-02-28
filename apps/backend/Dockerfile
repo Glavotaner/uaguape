@@ -6,7 +6,7 @@ RUN apk add --no-cache openssl3
 RUN yarn global add @nestjs/cli
 
 WORKDIR /app
-
+RUN ls -la
 # Copy the monorepo root package.json and yarn.lock
 COPY package*.json ./
 COPY yarn.lock ./
