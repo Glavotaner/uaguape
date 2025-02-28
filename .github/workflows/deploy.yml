@@ -19,7 +19,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.DEPLOY_KEY }}
           script: |
               cd uaguape &&
               git pull origin main &&
