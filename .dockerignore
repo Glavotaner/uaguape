@@ -1,0 +1,3 @@
+# Ignore Gradle directories
+.gradle
+apps/mobile
