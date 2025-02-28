@@ -15,11 +15,12 @@ jobs:
       - name: Deploy to Raspberry Pi with Docker Compose
         uses: appleboy/ssh-action@v1.2.1
         with:
-          # ... your SSH secrets and configuration ...
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
           script: |
-            ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
               cd uaguape &&
               git pull origin main &&
               docker compose down &&
               docker compose up -d --build
-            "
+            
