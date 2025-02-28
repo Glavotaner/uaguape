@@ -1,13 +1,15 @@
 name: Deploy Backend to Raspberry Pi
 
+
 on:
   push:
     branches: [ main ]
 
 jobs:
+  
   deploy:
     runs-on: ubuntu-latest
-
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.2.2
