@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           debug: true
-          timeout: 60
+          timeout: 60s
           script: |
               cd uaguape &&
               git pull origin main &&
