@@ -11,18 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
-
-
       - name: Deploy to Raspberry Pi with Docker Compose
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
-          fingerprint: ${{ secrets.FINGERPRINT }}
-          passphrase: ${{ secrets.PASSPHRASE }}
           debug: true
           script: |
               echo "I'm in"
