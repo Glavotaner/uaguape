@@ -21,6 +21,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+          fingerprint: ${{ secrets.FINGERPRINT }}
           debug: true
           script: |
               echo "I'm in"
