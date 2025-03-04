@@ -11,10 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Check internet connectivity
-        run: |
-          ping -c 4 google.com
-          curl -I https://www.google.com
+      
       - name: Deploy to Raspberry Pi with Docker Compose
         uses: appleboy/ssh-action@v1.0.3
         with:
