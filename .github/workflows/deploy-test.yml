@@ -13,7 +13,7 @@ jobs:
     steps:
       
       - name: Deploy to Raspberry Pi with Docker Compose
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
