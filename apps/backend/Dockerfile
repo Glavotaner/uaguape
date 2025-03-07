@@ -3,7 +3,7 @@ FROM node:23-alpine AS builder
 # Install openssl3 for Prisma
 RUN apk add --no-cache openssl3
 
-RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
+
 
 # Install @nestjs/cli globally
 RUN yarn global add @nestjs/cli
@@ -41,6 +41,9 @@ RUN yarn build
 
 # Stage 2: Production image
 FROM node:23-alpine
+
+# symlink libssl.so.3 to /lib
+RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
 
 WORKDIR /app
 
