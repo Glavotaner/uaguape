@@ -18,6 +18,7 @@ jobs:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
+          fingerprint: ${{ secrets.FINGERPRINT }}
           debug: true
           script: |
               echo "I'm in"
