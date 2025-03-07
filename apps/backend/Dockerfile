@@ -34,12 +34,6 @@ RUN yarn build
 # Stage 2: Production image
 FROM node:23-alpine
 
-# Install openssl3 for Prisma
-RUN apk add --no-cache openssl3
-
-# symlink libssl.so.3 to /lib
-RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
-
 WORKDIR /app
 
 # Copy the built backend app and production dependencies
@@ -47,6 +41,12 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/yarn.lock /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages ./packages
+
+# Install openssl3 for Prisma
+RUN apk add --no-cache openssl3
+
+# symlink libssl.so.3 to /lib
+RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3
 
 # Generate Prisma client
 WORKDIR /app/packages/@uaguape/db
