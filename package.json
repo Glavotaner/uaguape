@@ -2,6 +2,9 @@
     "private": true,
     "name": "uaguape",
     "version": "1.0.0",
+    "scripts": {
+        "deploy": "sh scripts/deploy.sh"
+    },
     "workspaces": [
         "apps/*",
         "packages/@uaguape/*"
