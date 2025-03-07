@@ -6,6 +6,7 @@ import { endOfDay, startOfDay } from 'date-fns';
 @Injectable()
 export class QuestionService {
   private readonly _question: Prisma.QuestionDelegate;
+
   private readonly questionSelect: {
     short: Prisma.QuestionSelect;
   } = {
@@ -37,13 +38,14 @@ export class QuestionService {
       },
       select: this.questionSelect.short,
     });
-    if (!dailyQuestion) {
-      const lastQuestion = await this._question.findFirst({
-        select: this.questionSelect.short,
-        orderBy: { displayedOn: 'desc' },
-      });
-      return lastQuestion;
+    if (dailyQuestion) {
+      return dailyQuestion;
     }
+    const lastQuestion = await this._question.findFirst({
+      select: this.questionSelect.short,
+      orderBy: { displayedOn: 'desc' },
+    });
+    return lastQuestion;
   }
 
   async setDailyQuestion() {
