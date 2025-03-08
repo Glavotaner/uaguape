@@ -21,7 +21,10 @@ RUN yarn install --frozen-lockfile
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 # Build the monorepo packages
-RUN yarn workspaces foreach --include @uaguape/common --include @uaguape/db --include @uaguape/linking --include @uaguape/routes run build
+RUN yarn workspace @uaguape/common build
+RUN yarn workspace @uaguape/db build
+RUN yarn workspace @uaguape/linking build
+RUN yarn workspace @uaguape/routes build
 
 # Copy the backend app's package.json and source code
 COPY apps/backend/package*.json apps/backend/tsconfig.json apps/backend/firebase.config.json ./
