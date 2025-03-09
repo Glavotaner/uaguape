@@ -18,6 +18,7 @@ COPY packages/@uaguape/routes ./packages/@uaguape/routes
 # Install monorepo dependencies (including backend dependencies)
 RUN yarn install --frozen-lockfile
 
+# Increase the memory limit for the build process
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 # Build the monorepo packages
@@ -45,12 +46,9 @@ COPY --from=builder /app/yarn.lock /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages ./packages
 
-# Install openssl3 for Prisma and symlink libssl.so.3 to /lib
-RUN apk add --no-cache openssl3 && ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 
-
-# Generate Prisma client
 WORKDIR /app/packages/@uaguape/db
-RUN npx prisma generate
+# Install openssl3 for Prisma and symlink libssl.so.3 to /lib - Generate Prisma client
+RUN apk add --no-cache openssl3 && ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 && npx prisma generate
 
 WORKDIR /app
 
