@@ -8,6 +8,9 @@ WORKDIR /app
 # Copy the monorepo root package.json and yarn.lock
 COPY package*.json yarn.lock ./
 
+# Replace "apps/*" with "apps/backend" in package.json so that only the backend app dependencies are installed
+RUN sed -i 's/"apps\/\*"/"apps\/backend"/g' package.json
+
 # Copy the workspaces
 COPY apps/backend ./apps/backend
 COPY packages/@uaguape/common ./packages/@uaguape/common
