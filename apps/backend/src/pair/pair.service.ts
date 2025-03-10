@@ -16,26 +16,25 @@ export class PairService {
   }
 
   async update(id: string, { pairId }: { pairId: string }) {
-    const user = await this._user.update({
-      where: { id },
-      data: { pairId },
-      select: { name: true },
-    });
-    const pair = await this._user.update({
-      where: { id: pairId },
-      data: { pairId: id },
-      select: { pushToken: true },
-    });
+    const user = await this.connectUserToPair({ id, pairId });
+    const pair = await this.connectPairToUser({ id, pairId });
 
     if (pair.pushToken) {
-      this.notificationService.create({
-        notification: {
-          title: 'Pairing',
-          body: `You have been paired with ${user.name}`,
-        },
-        token: pair.pushToken,
-      });
+      this.notifyPairOfPairing(user, pair);
     }
+  }
+
+  private notifyPairOfPairing(
+    user: { name: string },
+    pair: { pushToken: string },
+  ) {
+    this.notificationService.create({
+      notification: {
+        title: 'Pairing',
+        body: `You have been paired with ${user.name}`,
+      },
+      token: pair.pushToken,
+    });
   }
 
   findOne(id: string) {
@@ -44,5 +43,33 @@ export class PairService {
 
   generatePairCode(userId: string) {
     return deepLink.PairingRequest.link(userId);
+  }
+
+  private async connectUserToPair({
+    id,
+    pairId,
+  }: {
+    id: string;
+    pairId: string;
+  }) {
+    return this._user.update({
+      where: { id },
+      data: { pairId },
+      select: { name: true },
+    });
+  }
+
+  private async connectPairToUser({
+    id,
+    pairId,
+  }: {
+    id: string;
+    pairId: string;
+  }) {
+    return this._user.update({
+      where: { id: pairId },
+      data: { pairId: id },
+      select: { pushToken: true },
+    });
   }
 }
