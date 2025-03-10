@@ -55,4 +55,4 @@ RUN apk add --no-cache openssl3 && ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 &
 
 WORKDIR /app
 
-CMD ["npm", "run", "start:prod"]
+CMD ["yarn", "start:prod"]
