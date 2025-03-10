@@ -11,8 +11,12 @@ COPY package*.json yarn.lock ./
 # Replace "apps/*" with "apps/backend" in package.json so that only the backend app dependencies are installed
 RUN sed -i 's/"apps\/\*"/"apps\/backend"/g' package.json
 
-# Copy the workspaces
+# Copy the apps and packages because we need the source code and package.jsons
+
+# Copy the backend app
 COPY apps/backend ./apps/backend
+
+# Copy the packages
 COPY packages/@uaguape/common ./packages/@uaguape/common
 COPY packages/@uaguape/db ./packages/@uaguape/db
 COPY packages/@uaguape/linking ./packages/@uaguape/linking
@@ -24,27 +28,22 @@ RUN yarn install --frozen-lockfile
 # Increase the memory limit for the build process
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 
-# Build the monorepo packages
+# Build the backend app
+RUN yarn workspace backend build
+
+# Build the packages
 RUN yarn workspace @uaguape/common build
 RUN yarn workspace @uaguape/db build
 RUN yarn workspace @uaguape/linking build
 RUN yarn workspace @uaguape/routes build
-
-# Copy the backend app's package.json and source code
-COPY apps/backend/package*.json apps/backend/tsconfig.json apps/backend/firebase.config.json ./
-COPY apps/backend/src/ ./src/
-COPY packages/ ./packages/
-
-# Build the backend app
-RUN yarn build
 
 # Stage 2: Production image
 FROM node:23-alpine
 
 WORKDIR /app
 
-# Copy the built backend app and production dependencies
-COPY --from=builder /app/dist ./dist
+# Copy the built monorepo
+COPY --from=builder /app/apps ./apps
 COPY --from=builder /app/yarn.lock /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages ./packages
@@ -55,4 +54,4 @@ RUN apk add --no-cache openssl3 && ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 &
 
 WORKDIR /app
 
-CMD ["yarn", "start:prod"]
+CMD ["yarn", "workspace", "backend", "start:prod"]
