@@ -25,6 +25,6 @@ export class AnswerController {
 
   @Get(AnswerRoutes.QUESTION_ID)
   answers(@Param(QUESTION_ID) questionId: string, @GetUserId() userId: string) {
-    return this.answerService.answers(questionId, userId);
+    return this.answerService.answers({ questionId, userId });
   }
 }
