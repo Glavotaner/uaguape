@@ -16,8 +16,10 @@ export class PairService {
   }
 
   async update(id: string, { pairId }: { pairId: string }) {
-    const user = await this.connectUserToPair({ id, pairId });
-    const pair = await this.connectPairToUser({ id, pairId });
+    const [user, pair] = await Promise.all([
+      this.connectUserToPair({ id, pairId }),
+      this.connectPairToUser({ id, pairId }),
+    ]);
 
     if (pair.pushToken) {
       this.notifyPairOfPairing(user, pair);
