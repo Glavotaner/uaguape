@@ -28,3 +28,7 @@ yarn-debug.log*
 yarn-error.log*
 
 scripts/
+
+# Disregard PlugAndPlay cache
+.yarn/install-state.gz
+.pnp*
